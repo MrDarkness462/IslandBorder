@@ -10,7 +10,7 @@ import static com.github.zandy.islandborder.files.languages.Languages.LanguageEn
 import static org.magenpurp.api.MagenAPI.getVersionSupport;
 
 public class ASkyBlock extends BorderSupport {
-    private ASkyBlockAPI aSkyBlockAPI = ASkyBlockAPI.getInstance();
+    private final ASkyBlockAPI aSkyBlockAPI = ASkyBlockAPI.getInstance();
 
     @Override
     public void send(Player p) {
