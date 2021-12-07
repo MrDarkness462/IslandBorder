@@ -2,8 +2,16 @@ package com.github.zandy.islandborder.files;
 
 import org.magenpurp.api.utils.FileManager;
 
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static org.magenpurp.api.versionsupport.BorderColor.BLUE;
+
 public class Settings extends FileManager {
     public enum SettingsEnum {
+        COMMAND_ALIASES("Command-Aliases", asList("ib", "islandborder", "aiborder", "bbborder", "bsborder", "usborder", "iwborder")),
+        DEFAULT_BORDER_STATE("Default-Border.State", true),
+        DEFAULT_BORDER_COLOR("Default-Border.Color", BLUE.name()),
         COOLDOWN_ENABLED("Cooldown.Enabled", true),
         COOLDOWN_SECONDS("Cooldown.Seconds", 5);
 
@@ -25,6 +33,14 @@ public class Settings extends FileManager {
 
         public boolean getBoolean() {
             return getInstance().getBoolean(getPath());
+        }
+
+        public String getString() {
+            return getInstance().getString(getPath());
+        }
+
+        public List<String> getStringList() {
+            return getInstance().getStringList(getPath());
         }
 
         public int getInt() {

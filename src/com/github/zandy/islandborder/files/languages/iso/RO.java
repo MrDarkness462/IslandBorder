@@ -8,6 +8,7 @@ public class RO extends FileManager {
 
     public RO() {
         super("RO");
+        addDefault(NO_PERMISSION.getPath(), "&7[&aIB&7] &cNu ai permisiune sa folosesti aceasta comanda.");
         addDefault(COOLDOWN.getPath(), "&7[&aIB&7] &fCooldown-ul border-ului expira in &e[seconds] [secondsFormatted]&f.");
         addDefault(TOGGLED_ON.getPath(), "&7[&aIB&7] &fBorder-ul este acum vizibil cu culoarea [color]&f.");
         addDefault(TOGGLED_OFF.getPath(), "&7[&aIB&7] &fBorder-ul este acum invizibil.");

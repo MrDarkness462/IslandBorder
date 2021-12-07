@@ -1,9 +1,9 @@
 package com.github.zandy.islandborder.support;
 
 import com.github.zandy.islandborder.player.PlayerData;
-import com.wasteofplastic.askyblock.ASkyBlockAPI;
-import com.wasteofplastic.askyblock.Island;
-import com.wasteofplastic.askyblock.events.*;
+import com.wasteofplastic.acidisland.ASkyBlockAPI;
+import com.wasteofplastic.acidisland.Island;
+import com.wasteofplastic.acidisland.events.*;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,19 +14,19 @@ import static com.github.zandy.islandborder.files.languages.Languages.LanguageEn
 import static org.bukkit.Bukkit.getPlayer;
 import static org.magenpurp.api.MagenAPI.*;
 
-public class ASkyBlock extends BorderSupport implements Listener {
-    private final ASkyBlockAPI aSkyBlockAPI = ASkyBlockAPI.getInstance();
+public class AcidIsland extends BorderSupport implements Listener {
+    private final ASkyBlockAPI acidIslandAPI = ASkyBlockAPI.getInstance();
 
-    public ASkyBlock() {
+    public AcidIsland() {
         registerEvent(this);
     }
 
     @Override
     public void send(Player p) {
-        if (aSkyBlockAPI == null) return;
-        if (!aSkyBlockAPI.getIslandWorld().equals(p.getWorld())) return;
+        if (acidIslandAPI == null) return;
+        if (!acidIslandAPI.getIslandWorld().equals(p.getWorld())) return;
         if (p.getLocation() == null) return;
-        Island island = aSkyBlockAPI.getIslandAt(p.getLocation());
+        Island island = acidIslandAPI.getIslandAt(p.getLocation());
         if (island == null) return;
         Location center = island.getCenter();
         if (center == null) return;
@@ -37,14 +37,14 @@ public class ASkyBlock extends BorderSupport implements Listener {
 
     @Override
     public String size(Player p) {
-        if (aSkyBlockAPI == null || !aSkyBlockAPI.getIslandWorld().equals(p.getWorld()) || !aSkyBlockAPI.playerIsOnIsland(p)) return PLACEHOLDERS_SIZE_NOT_ON_ISLAND.getString(p.getUniqueId());
-        int size = aSkyBlockAPI.getIslandAt(p.getLocation()).getProtectionSize() / 2;
+        if (acidIslandAPI == null || !acidIslandAPI.getIslandWorld().equals(p.getWorld()) || !acidIslandAPI.playerIsOnIsland(p)) return PLACEHOLDERS_SIZE_NOT_ON_ISLAND.getString(p.getUniqueId());
+        int size = acidIslandAPI.getIslandAt(p.getLocation()).getProtectionSize() / 2;
         return size + "x" + size;
     }
 
     @Override
     public boolean inSkyBlockWorld(Player p) {
-        return aSkyBlockAPI != null && aSkyBlockAPI.getIslandWorld().equals(p.getWorld());
+        return acidIslandAPI != null && acidIslandAPI.getIslandWorld().equals(p.getWorld());
     }
 
     @EventHandler
@@ -56,7 +56,7 @@ public class ASkyBlock extends BorderSupport implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (!aSkyBlockAPI.playerIsOnIsland(p) || !playerData.getBorderState()) return;
+                if (!acidIslandAPI.playerIsOnIsland(p) || !playerData.getBorderState()) return;
                 send(p);
             }
         }.runTaskLater(getPlugin(), 10);
@@ -71,7 +71,7 @@ public class ASkyBlock extends BorderSupport implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (!aSkyBlockAPI.playerIsOnIsland(p) || !playerData.getBorderState()) return;
+                if (!acidIslandAPI.playerIsOnIsland(p) || !playerData.getBorderState()) return;
                 send(p);
             }
         }.runTaskLater(getPlugin(), 10);

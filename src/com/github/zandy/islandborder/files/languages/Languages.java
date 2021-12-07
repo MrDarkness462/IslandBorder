@@ -12,6 +12,8 @@ import java.util.UUID;
 
 public class Languages {
     public enum LanguageEnum {
+        CONSOLE_NOT_AVAILABLE("Console-Not-Available", "&7[&aIB&7] &cThis command can't be used in console.", true),
+        NO_PERMISSION("No-Permission", "&7[&aIB&7] &cYou don't have permission to use this command."),
         COOLDOWN("Cooldown", "&7[&aIB&7] &fBorder cooldown expires in &e[seconds] [secondsFormatted]&f."),
         TOGGLED_ON("Toggled.On", "&7[&aIB&7] &fThe Border is now shown with the color [color]&f."),
         TOGGLED_OFF("Toggled.On", "&7[&aIB&7] &fThe Border is now hidden."),
@@ -28,10 +30,17 @@ public class Languages {
 
         final String path;
         final Object defaultValue;
+        boolean ignoreInLanguage = false;
 
         LanguageEnum(String path, Object defaultValue) {
             this.path = path;
             this.defaultValue = defaultValue;
+        }
+
+        LanguageEnum(String path, Object defaultValue, boolean ignoreInLanguages) {
+            this.path = path;
+            this.defaultValue = defaultValue;
+            this.ignoreInLanguage = ignoreInLanguages;
         }
 
         public String getString(UUID uuid) {
@@ -48,6 +57,10 @@ public class Languages {
 
         public Object getDefaultValue() {
             return defaultValue;
+        }
+
+        public boolean ignoreInLanguage() {
+            return ignoreInLanguage;
         }
     }
     private static HashMap<UUID, String> playerLocaleMap = new HashMap<>();
@@ -68,7 +81,7 @@ public class Languages {
         }
         for (String iso : localeList) {
             FileManager locale = new FileManager("Language_" + iso, "Languages");
-            for (LanguageEnum langEnum : LanguageEnum.values()) locale.addDefault(langEnum.getPath(), langEnum.getDefaultValue());
+            for (LanguageEnum langEnum : LanguageEnum.values()) if (!langEnum.ignoreInLanguage()) locale.addDefault(langEnum.getPath(), langEnum.getDefaultValue());
             locale.copyDefaults();
             locale.save();
             localeFileMap.put(iso, locale);
