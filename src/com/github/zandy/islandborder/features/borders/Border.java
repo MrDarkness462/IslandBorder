@@ -24,9 +24,9 @@ import static org.magenpurp.api.MagenAPI.getVersionSupport;
 
 public class Border {
     private HashMap<UUID, List<BukkitTask>> bukkitTasksMap = new HashMap<>();
-    private List<UUID> cooldownList = new ArrayList<>();
-    private boolean isCooldownEnabled;
-    private int cooldownSeconds;
+    private final List<UUID> cooldownList = new ArrayList<>();
+    private final boolean isCooldownEnabled;
+    private final int cooldownSeconds;
 
     public Border() {
         isCooldownEnabled = COOLDOWN_ENABLED.getBoolean();
