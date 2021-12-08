@@ -25,12 +25,14 @@ public class Main extends JavaPlugin {
         new MagenAPI(this).initDB();
         new Settings();
         new Languages();
-        borderGUI = new BorderGUI();
-        colorGUI = new ColorGUI();
+        IslandBorderCommand islandBorderCommand = new IslandBorderCommand();
+        if (SUBCOMMAND_ENABLED_GUI.getBoolean()) {
+            borderGUI = new BorderGUI();
+            colorGUI = new ColorGUI();
+            islandBorderCommand.addSubCommand(new GUISubCommand(), INFO_SUBCOMMAND_GUI.getString());
+        }
         border = new Border();
         borderSupport = ;
-        IslandBorderCommand islandBorderCommand = new IslandBorderCommand();
-        if (SUBCOMMAND_ENABLED_GUI.getBoolean()) islandBorderCommand.addSubCommand(new GUISubCommand(), INFO_SUBCOMMAND_GUI.getString());
     }
 
     @Override
