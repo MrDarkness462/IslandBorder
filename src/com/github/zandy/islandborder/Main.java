@@ -1,6 +1,8 @@
 package com.github.zandy.islandborder;
 
 import com.github.zandy.islandborder.commands.IslandBorderCommand;
+import com.github.zandy.islandborder.commands.subcommands.DisableSubCommand;
+import com.github.zandy.islandborder.commands.subcommands.EnableSubCommand;
 import com.github.zandy.islandborder.commands.subcommands.GUISubCommand;
 import com.github.zandy.islandborder.features.borders.Border;
 import com.github.zandy.islandborder.features.guis.BorderGUI;
@@ -13,7 +15,7 @@ import com.github.zandy.islandborder.support.BorderSupport;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.magenpurp.api.MagenAPI;
 
-import static com.github.zandy.islandborder.files.Settings.SettingsEnum.SUBCOMMAND_ENABLED_GUI;
+import static com.github.zandy.islandborder.files.Settings.SettingsEnum.*;
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.INFO_SUBCOMMAND_GUI;
 
 public class Main extends JavaPlugin {
@@ -35,6 +37,8 @@ public class Main extends JavaPlugin {
             colorGUI = new ColorGUI();
             islandBorderCommand.addSubCommand(new GUISubCommand(), INFO_SUBCOMMAND_GUI.getString());
         }
+        if (SUBCOMMAND_ENABLED_BORDER_ENABLE.getBoolean()) islandBorderCommand.addSubCommand(new EnableSubCommand(), );
+        if (SUBCOMMAND_ENABLED_BORDER_DISABLE.getBoolean()) islandBorderCommand.addSubCommand(new DisableSubCommand(), );
         border = new Border();
         borderSupport = ;
     }

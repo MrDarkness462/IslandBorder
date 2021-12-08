@@ -4,6 +4,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.magenpurp.api.utils.FileManager;
 import org.magenpurp.api.versionsupport.materials.Materials;
 
+import static com.github.zandy.islandborder.files.guis.ColorGUIFile.ColorGUIEnum.*;
 import static org.bukkit.event.inventory.InventoryType.HOPPER;
 import static org.magenpurp.api.versionsupport.materials.Materials.*;
 
@@ -50,7 +51,21 @@ public class ColorGUIFile extends FileManager {
 
     public ColorGUIFile() {
         super("Color", "GUIs");
-
+        addDefault(INVENTORY_TYPE.getPath(), INVENTORY_TYPE.getDefaultValue());
+        addDefault(SLOTS_RED_BUTTON_SLOT.getPath(), SLOTS_RED_BUTTON_SLOT.getDefaultValue());
+        addDefault(SLOTS_RED_BUTTON_MATERIAL.getPath(), SLOTS_RED_BUTTON_MATERIAL.getDefaultValue());
+        if (!contains(SLOTS_BLUE_BUTTON_MATERIAL.getPath())) {
+            addDefault(SLOTS_EMPTY_1_SLOT.getPath(), SLOTS_EMPTY_1_SLOT.getDefaultValue());
+            addDefault(SLOTS_EMPTY_1_MATERIAL.getPath(), SLOTS_EMPTY_1_MATERIAL.getDefaultValue());
+        }
+        addDefault(SLOTS_GREEN_BUTTON_SLOT.getPath(), SLOTS_GREEN_BUTTON_SLOT.getDefaultValue());
+        addDefault(SLOTS_GREEN_BUTTON_MATERIAL.getPath(), SLOTS_GREEN_BUTTON_MATERIAL.getDefaultValue());
+        if (!contains(SLOTS_BLUE_BUTTON_MATERIAL.getPath())) {
+            addDefault(SLOTS_EMPTY_2_SLOT.getPath(), SLOTS_EMPTY_2_SLOT.getDefaultValue());
+            addDefault(SLOTS_EMPTY_2_MATERIAL.getPath(), SLOTS_EMPTY_2_MATERIAL.getDefaultValue());
+        }
+        addDefault(SLOTS_BLUE_BUTTON_SLOT.getPath(), SLOTS_BLUE_BUTTON_SLOT.getDefaultValue());
+        addDefault(SLOTS_BLUE_BUTTON_MATERIAL.getPath(), SLOTS_BLUE_BUTTON_MATERIAL.getDefaultValue());
         copyDefaults();
         save();
         colorGUIFile = this;
