@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.magenpurp.api.gui.ClickAction;
 import org.magenpurp.api.gui.GUI;
 import org.magenpurp.api.gui.GuiItem;
+import org.magenpurp.api.item.ItemBuilder;
 import org.magenpurp.api.utils.FileManager;
 import org.magenpurp.api.versionsupport.BorderColor;
 import org.magenpurp.api.versionsupport.materials.Materials;
@@ -20,6 +21,7 @@ import static com.github.zandy.islandborder.files.guis.BorderGUIFile.getBorderGU
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.BORDER_GUI_TITLE;
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.NO_PERMISSION_COMMAND;
 import static com.github.zandy.islandborder.files.languages.Languages.getLocaleFiles;
+import static com.github.zandy.islandborder.files.languages.Languages.getPlayerLocale;
 import static org.magenpurp.api.MagenAPI.getVersionSupport;
 import static org.magenpurp.api.MagenAPI.print;
 import static org.magenpurp.api.versionsupport.BorderColor.*;
@@ -28,6 +30,7 @@ public class BorderGUI {
     private final InventoryType inventoryType = INVENTORY_TYPE.getInventoryType();
     private final HashMap<String, Materials> materialsMap = new HashMap<>();
     private final HashMap<String, Integer> slotsMap = new HashMap<>();
+    private final HashMap<String, String> pathMap = new HashMap<>();
     private final HashMap<BorderColor, Materials> borderColorMaterialsMap = new HashMap<>();
     private final List<String> itemsPath = new ArrayList<>();
 
@@ -36,7 +39,8 @@ public class BorderGUI {
             String formatted = "Slots." + s.split("\\.")[0];
             if (!itemsPath.contains(formatted)) {
                 itemsPath.add(formatted);
-                slotsMap.put(formatted, getBorderGUIFile().getInt(formatSlot(formatted)));
+                slotsMap.put(formatted, getBorderGUIFile().getInt(formatSlot(formatted)) - 1);
+                pathMap.put(formatted, "Slots.Border." + s.split("\\.")[0]);
                 if (!s.contains("Color-Button")) materialsMap.put(formatted, getBorderGUIFile().getMaterial(formatMaterial(formatted)));
             }
             borderColorMaterialsMap.put(RED, SLOTS_COLOR_BUTTON_RED_MATERIAL.getMaterial());
@@ -44,35 +48,36 @@ public class BorderGUI {
             borderColorMaterialsMap.put(BLUE, SLOTS_COLOR_BUTTON_BLUE_MATERIAL.getMaterial());
         }
         for (Map.Entry<String, FileManager> map : getLocaleFiles().entrySet()) {
+            FileManager iso = map.getValue();
             if (map.getKey().equals("RO")) {
-                map.getValue().addDefault("Slots.Enable-Button.Name", "&aPorneste Border-ul");
-                if (!map.getKey().contains("Slots.Color-Button.Name")) map.getValue().addDefault("Slots.Empty-1.Name", "");
-                map.getValue().addDefault("Slots.Disable-Button.Name", "&aOpreste Border-ul");
-                if (!map.getKey().contains("Slots.Color-Button.Name")) map.getValue().addDefault("Slots.Empty-2.Name", "");
-                map.getValue().addDefault("Slots.Color-Button.Name", "&7Culoarea border-ului: [color]");
+                iso.addDefault("Slots.Border.Enable-Button.Name", "&aPorneste Border-ul");
+                if (!iso.contains("Slots.Border.Color-Button.Name")) iso.addDefault("Slots.Border.Empty-1.Name", " ");
+                iso.addDefault("Slots.Border.Disable-Button.Name", "&aOpreste Border-ul");
+                if (!iso.contains("Slots.Border.Color-Button.Name")) iso.addDefault("Slots.Border.Empty-2.Name", " ");
+                iso.addDefault("Slots.Border.Color-Button.Name", "&7Culoarea border-ului: [color]");
             } else {
-                map.getValue().addDefault("Slots.Enable-Button.Name", "&aEnable Border");
-                if (!map.getKey().contains("Slots.Color-Button.Name")) map.getValue().addDefault("Slots.Empty-1.Name", "");
-                map.getValue().addDefault("Slots.Disable-Button.Name", "&aDisable Border");
-                if (!map.getKey().contains("Slots.Color-Button.Name")) map.getValue().addDefault("Slots.Empty-2.Name", "");
-                map.getValue().addDefault("Slots.Color-Button.Name", "&7Border Color: [color]");
+                iso.addDefault("Slots.Border.Enable-Button.Name", "&aEnable Border");
+                if (!iso.contains("Slots.Border.Color-Button.Name")) iso.addDefault("Slots.Border.Empty-1.Name", " ");
+                iso.addDefault("Slots.Border.Disable-Button.Name", "&aDisable Border");
+                if (!iso.contains("Slots.Border.Color-Button.Name")) iso.addDefault("Slots.Border.Empty-2.Name", " ");
+                iso.addDefault("Slots.Border.Color-Button.Name", "&7Border Color: [color]");
             }
-            map.getValue().addDefault("Slots.Enable-Button.Lore", new ArrayList<>());
-            if (!map.getKey().contains("Slots.Color-Button.Name")) {
-                map.getValue().addDefault("Slots.Empty-1.Lore", new ArrayList<>());
-                map.getValue().addDefault("Slots.Empty-2.Lore", new ArrayList<>());
+            iso.addDefault("Slots.Border.Enable-Button.Lore", new ArrayList<>());
+            if (!iso.contains("Slots.Border.Color-Button.Name")) {
+                iso.addDefault("Slots.Border.Empty-1.Lore", new ArrayList<>());
+                iso.addDefault("Slots.Border.Empty-2.Lore", new ArrayList<>());
             }
-            map.getValue().addDefault("Slots.Disable-Button.Lore", new ArrayList<>());
-            map.getValue().addDefault("Slots.Color-Button.Lore", new ArrayList<>());
-            map.getValue().copyDefaults();
-            map.getValue().save();
+            iso.addDefault("Slots.Border.Disable-Button.Lore", new ArrayList<>());
+            iso.addDefault("Slots.Border.Color-Button.Lore", new ArrayList<>());
+            iso.copyDefaults();
+            iso.save();
             for (String s : itemsPath) {
                 boolean throwError = false;
                 String subPath = null;
-                if (!map.getValue().contains(s + ".Name")) {
+                if (!iso.contains(s + ".Name")) {
                     throwError = true;
                     subPath = ".Name";
-                } else if (!map.getValue().contains(s + ".Lore")) {
+                } else if (!iso.contains(s + ".Lore")) {
                     throwError = true;
                     subPath = ".Lore";
                 }
@@ -91,13 +96,15 @@ public class BorderGUI {
         UUID uuid = p.getUniqueId();
         PlayerData playerData = PlayerData.get(uuid);
         if (playerData.getBorderColor() == null) return;
-        FileManager iso = getLocaleFiles().get(Languages.getPlayerLocale().get(uuid));
+        FileManager iso = getLocaleFiles().get(getPlayerLocale().get(uuid));
         GUI gui = new GUI(p, inventoryType, BORDER_GUI_TITLE.getString(uuid));
         String color = iso.getString("Color." + getVersionSupport().makeFirstLetterUppercase(playerData.getBorderColor().name().toLowerCase()));
         for (String s : itemsPath) {
             Materials finalMaterial = materialsMap.get(s);
             if (s.contains("Color-Button")) finalMaterial = borderColorMaterialsMap.get(playerData.getBorderColor());
-            gui.addItem(new GuiItem(finalMaterial.getItem().setDisplayName(iso.getString(s).replace("[color]", color)).build(), slotsMap.get(s)).addClickAction(new ClickAction() {
+            ItemBuilder item = finalMaterial.getItem().setDisplayName(iso.getString(pathMap.get(s + ".Name")).replace("[color]", color));
+            if (iso.getStringList(s + ".Lore").size() > 0) item.setLore(iso.getStringList(pathMap.get(s + ".Lore")));
+            gui.addItem(new GuiItem(item.build(), slotsMap.get(s)).addClickAction(new ClickAction() {
                 @Override
                 public void onClick(GuiItem guiItem, GUI gui) {
                     switch (s.split("\\.")[1]) {

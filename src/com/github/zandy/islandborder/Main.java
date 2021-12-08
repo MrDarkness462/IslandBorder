@@ -6,6 +6,8 @@ import com.github.zandy.islandborder.features.borders.Border;
 import com.github.zandy.islandborder.features.guis.BorderGUI;
 import com.github.zandy.islandborder.features.guis.ColorGUI;
 import com.github.zandy.islandborder.files.Settings;
+import com.github.zandy.islandborder.files.guis.BorderGUIFile;
+import com.github.zandy.islandborder.files.guis.ColorGUIFile;
 import com.github.zandy.islandborder.files.languages.Languages;
 import com.github.zandy.islandborder.support.BorderSupport;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,7 +29,9 @@ public class Main extends JavaPlugin {
         new Languages();
         IslandBorderCommand islandBorderCommand = new IslandBorderCommand();
         if (SUBCOMMAND_ENABLED_GUI.getBoolean()) {
+            new BorderGUIFile();
             borderGUI = new BorderGUI();
+            new ColorGUIFile();
             colorGUI = new ColorGUI();
             islandBorderCommand.addSubCommand(new GUISubCommand(), INFO_SUBCOMMAND_GUI.getString());
         }

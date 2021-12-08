@@ -29,10 +29,10 @@ public class Languages {
         COLOR_RED("Color.Red", "&cRed"),
         COLOR_GREEN("Color.Green", "&aGreen"),
         COLOR_BLUE("Color.Blue", "&9Blue"),
+        COLOR_GUI_TITLE("Color.GUI.Title", "&fColor Settings"),
         PLACEHOLDERS_SIZE_NOT_ON_ISLAND("Placeholders.Size-Not-On-Island", "&7Not on island"),
         UNITS_SECOND("Units.Second", "second"),
         UNITS_SECONDS("Units.Seconds", "seconds");
-
         final String path;
         final Object defaultValue;
         boolean ignoreInLanguage = false;

@@ -23,6 +23,7 @@ public class RO extends FileManager {
         addDefault(COLOR_RED.getPath(), "&cRosu");
         addDefault(COLOR_GREEN.getPath(), "&aVerde");
         addDefault(COLOR_BLUE.getPath(), "&9Albastru");
+        addDefault(COLOR_GUI_TITLE.getPath(), "&fSetari Culoare");
         addDefault(PLACEHOLDERS_SIZE_NOT_ON_ISLAND.getPath(), "&7Nu esti pe insula");
         addDefault(UNITS_SECOND.getPath(), "secunda");
         addDefault(UNITS_SECONDS.getPath(), "secunde");
