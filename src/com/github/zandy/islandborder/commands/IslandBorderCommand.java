@@ -7,7 +7,7 @@ import org.magenpurp.api.command.ParentCommand;
 
 import static com.github.zandy.islandborder.files.Settings.SettingsEnum.COMMAND_ALIASES;
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.CONSOLE_NOT_AVAILABLE;
-import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.NO_PERMISSION;
+import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.NO_PERMISSION_COMMAND;
 import static org.bukkit.ChatColor.translateAlternateColorCodes;
 import static org.magenpurp.api.MagenAPI.getPlugin;
 
@@ -36,6 +36,6 @@ public class IslandBorderCommand extends ParentCommand {
 
     @Override
     public String noPermissionMessage(CommandSender s) {
-        return NO_PERMISSION.getString(((Player) s).getUniqueId());
+        return NO_PERMISSION_COMMAND.getString(((Player) s).getUniqueId());
     }
 }

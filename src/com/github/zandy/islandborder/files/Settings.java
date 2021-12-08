@@ -10,13 +10,15 @@ import static org.magenpurp.api.versionsupport.BorderColor.BLUE;
 public class Settings extends FileManager {
     public enum SettingsEnum {
         COMMAND_ALIASES("Command-Aliases", asList("ib", "islandborder", "aiborder", "bbborder", "bsborder", "usborder", "iwborder")),
-        DEFAULT_BORDER_STATE("Default-Border.State", true),
-        DEFAULT_BORDER_COLOR("Default-Border.Color", BLUE.name()),
+        SUBCOMMAND_ENABLED_GUI("SubCommand-Enabled.GUI", true),
+        DEFAULT_LANGUAGE("Default.Language", "EN"),
+        DEFAULT_BORDER_STATE("Default.Border-State", true),
+        DEFAULT_BORDER_COLOR("Default.Border-Color", BLUE.name()),
         COOLDOWN_ENABLED("Cooldown.Enabled", true),
         COOLDOWN_SECONDS("Cooldown.Seconds", 5);
 
-        String path;
-        Object defaultValue;
+        final String path;
+        final Object defaultValue;
 
         SettingsEnum(String path, Object defaultValue) {
             this.path = path;

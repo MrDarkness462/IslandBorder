@@ -1,6 +1,8 @@
 package com.github.zandy.islandborder.features.borders;
 
+import com.github.zandy.islandborder.files.languages.Languages.LanguageEnum;
 import com.github.zandy.islandborder.player.PlayerData;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.magenpurp.api.versionsupport.BorderColor;
@@ -36,19 +38,19 @@ public class Border {
         if (isCooldownEnabled && !applyCooldown(uuid, playerData)) return;
         if (enabled) {
             if (isEnabled(uuid)) {
-                getPlayer(uuid).sendMessage(ALREADY_TOGGLED_ON.getString(uuid));
+                getPlayer(uuid).sendMessage(BORDER_ALREADY_TOGGLED_ON.getString(uuid));
                 cancelCooldown(uuid);
             } else {
                 playerData.setBorderState(true);
-                getPlayer(uuid).sendMessage(TOGGLED_ON.getString(uuid).replace("[color]", getLocaleFiles().get(getPlayerLocale().get(uuid)).getString("Color." + getVersionSupport().makeFirstLetterUppercase(playerData.getBorderColor().name().toLowerCase()))));
+                getPlayer(uuid).sendMessage(BORDER_TOGGLED_ON.getString(uuid).replace("[color]", getLocaleFiles().get(getPlayerLocale().get(uuid)).getString("Color." + getVersionSupport().makeFirstLetterUppercase(playerData.getBorderColor().name().toLowerCase()))));
             }
         } else {
             if (!isEnabled(uuid)) {
-                getPlayer(uuid).sendMessage(ALREADY_TOGGLED_OFF.getString(uuid));
+                getPlayer(uuid).sendMessage(BORDER_ALREADY_TOGGLED_OFF.getString(uuid));
                 cancelCooldown(uuid);
             } else {
                 playerData.setBorderState(false);
-                getPlayer(uuid).sendMessage(TOGGLED_OFF.getString(uuid));
+                getPlayer(uuid).sendMessage(BORDER_TOGGLED_OFF.getString(uuid));
             }
         }
     }
@@ -56,13 +58,19 @@ public class Border {
     public void setColorState(UUID uuid, BorderColor color) {
         if (color == null) return;
         PlayerData playerData = PlayerData.get(uuid);
+        Player p = getPlayer(uuid);
+        if (!p.hasPermission("isborder.color." + playerData.getBorderColor().name().toLowerCase())) {
+            p.sendMessage(NO_PERMISSION_COLOR.getString(uuid).replace("[color]", LanguageEnum.valueOf("COLOR_" + playerData.getBorderColor()).getString(uuid)));
+            p.closeInventory();
+            return;
+        }
         if (playerData.getBorderColor().equals(color)) {
-            getPlayer(uuid).sendMessage(COLOR_ALREADY_DISPLAYING.getString(uuid));
+            p.sendMessage(COLOR_ALREADY_DISPLAYING.getString(uuid));
             return;
         }
         if (isCooldownEnabled && !applyCooldown(uuid, playerData)) return;
         playerData.setBorderColor(color);
-        getPlayer(uuid).sendMessage(COLOR_CHANGED.getString(uuid).replace("[color]", getLocaleFiles().get(getPlayerLocale().get(uuid)).getString("Color." + getVersionSupport().makeFirstLetterUppercase(playerData.getBorderColor().name().toLowerCase()))));
+        p.sendMessage(COLOR_CHANGED.getString(uuid).replace("[color]", getLocaleFiles().get(getPlayerLocale().get(uuid)).getString("Color." + getVersionSupport().makeFirstLetterUppercase(playerData.getBorderColor().name().toLowerCase()))));
     }
 
     public boolean isEnabled(UUID uuid) {
@@ -98,7 +106,7 @@ public class Border {
             return true;
         } else {
             String time = playerData.getCooldownSeconds() > 1 ? UNITS_SECONDS.getString(uuid) : UNITS_SECOND.getString(uuid);
-            getPlayer(uuid).sendMessage(COOLDOWN.getString(uuid).replace("[seconds]", String.valueOf(playerData.getCooldownSeconds())).replace("[secondsFormatted]", time));
+            getPlayer(uuid).sendMessage(BORDER_COOLDOWN.getString(uuid).replace("[seconds]", String.valueOf(playerData.getCooldownSeconds())).replace("[secondsFormatted]", time));
             return false;
         }
     }

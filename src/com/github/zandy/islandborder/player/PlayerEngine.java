@@ -12,8 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static com.github.zandy.islandborder.files.Settings.SettingsEnum.DEFAULT_BORDER_COLOR;
-import static com.github.zandy.islandborder.files.Settings.SettingsEnum.DEFAULT_BORDER_STATE;
+import static com.github.zandy.islandborder.files.Settings.SettingsEnum.*;
 import static java.lang.Boolean.parseBoolean;
 import static org.bukkit.Bukkit.getOnlinePlayers;
 import static org.bukkit.Bukkit.getPlayer;
@@ -23,7 +22,7 @@ import static org.magenpurp.api.database.Database.getMySQLCredentials;
 
 public class PlayerEngine implements Listener {
     private final Boolean defaultState = DEFAULT_BORDER_STATE.getBoolean();
-    private final String defaultColor = DEFAULT_BORDER_COLOR.getString();
+    private final String defaultColor = DEFAULT_BORDER_COLOR.getString(), defaultLanguage = DEFAULT_LANGUAGE.getString();
     private List<UUID> cachedPlayers = new ArrayList<>();
 
     public PlayerEngine() {
@@ -58,6 +57,7 @@ public class PlayerEngine implements Listener {
             columnInfoList.add(new ColumnInfo("UUID", uuid.toString()));
             columnInfoList.add(new ColumnInfo("Enabled", defaultState.toString()));
             columnInfoList.add(new ColumnInfo("Color", defaultColor));
+            columnInfoList.add(new ColumnInfo("Language", defaultLanguage));
             getDatabase().createPlayer(uuid, "Island-Border", columnInfoList);
             return;
         }
@@ -65,6 +65,7 @@ public class PlayerEngine implements Listener {
         getDatabase().setString(uuid, uuid.toString(), "UUID", "Island-Border");
         getDatabase().setString(uuid, defaultState.toString(), "Enabled", "Island-Border");
         getDatabase().setString(uuid, defaultColor, "Color", "Island-Border");
+        getDatabase().setString(uuid, defaultLanguage, "Language", "Island-Border");
     }
 
     private void patchProfile(UUID uuid) {
@@ -73,6 +74,7 @@ public class PlayerEngine implements Listener {
         account.addDefault("Island-Border.UUID", uuid.toString());
         account.addDefault("Island-Border.Enabled", defaultState.toString());
         account.addDefault("Island-Border.Color", defaultColor);
+        account.addDefault("Island-Border.Language", defaultLanguage);
         account.copyDefaults();
         account.save();
     }
