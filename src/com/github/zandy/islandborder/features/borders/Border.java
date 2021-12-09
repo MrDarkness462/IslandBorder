@@ -33,6 +33,10 @@ public class Border {
         cooldownSeconds = COOLDOWN_SECONDS.getInt();
     }
 
+    public void toggleState(UUID uuid) {
+        setState(uuid, !isEnabled(uuid));
+    }
+
     public void setState(UUID uuid, boolean enabled) {
         PlayerData playerData = PlayerData.get(uuid);
         if (isCooldownEnabled && !applyCooldown(uuid, playerData)) return;

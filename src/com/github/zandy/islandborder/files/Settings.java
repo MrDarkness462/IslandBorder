@@ -11,8 +11,10 @@ public class Settings extends FileManager {
     public enum SettingsEnum {
         COMMAND_ALIASES("Command-Aliases", asList("ib", "islandborder", "aiborder", "bbborder", "bsborder", "usborder", "iwborder")),
         SUBCOMMAND_ENABLED_GUI("SubCommand-Enabled.GUI", true),
-        SUBCOMMAND_ENABLED_BORDER_ENABLE("SubCommand-Enabled.Border.Enable", true),
-        SUBCOMMAND_ENABLED_BORDER_DISABLE("SubCommand-Enabled.Border.Disable", true),
+        SUBCOMMAND_ENABLED_BORDER_ENABLE("SubCommand-Enabled.Enable", true),
+        SUBCOMMAND_ENABLED_BORDER_DISABLE("SubCommand-Enabled.Disable", true),
+        SUBCOMMAND_ENABLED_BORDER_TOGGLE("SubCommand-Enabled.Toggle", true),
+        SUBCOMMAND_ENABLED_BORDER_COLOR("SubCommand-Enabled.Color", true),
         DEFAULT_LANGUAGE("Default.Language", "EN"),
         DEFAULT_BORDER_STATE("Default.Border-State", true),
         DEFAULT_BORDER_COLOR("Default.Border-Color", BLUE.name()),
