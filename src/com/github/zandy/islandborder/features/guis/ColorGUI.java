@@ -42,22 +42,20 @@ public class ColorGUI {
             FileManager iso = map.getValue();
             if (map.getKey().equals("RO")) {
                 iso.addDefault("Slots.Color.Red-Button.Name", "Selecteaza &cRosu");
-                if (iso.contains("Slots.Color.Blue-Button.Name")) iso.addDefault("Slots.Color.Empty-1.Name", " ");
+                if (!iso.contains("Slots.Color.Blue-Button.Name")) iso.addDefault("Slots.Color.Empty-1.Name", " ");
                 iso.addDefault("Slots.Color.Green-Button.Name", "Selecteaza &aVerde");
-                if (iso.contains("Slots.Color.Blue-Button.Name")) iso.addDefault("Slots.Color.Emtpty-2.Name", " ");
+                if (!iso.contains("Slots.Color.Blue-Button.Name")) iso.addDefault("Slots.Color.Empty-2.Name", " ");
                 iso.addDefault("Slots.Color.Blue-Button.Name", "Selecteaza &9Albastru");
             } else {
                 iso.addDefault("Slots.Color.Red-Button.Name", "Select &cRed");
-                if (iso.contains("Slots.Color.Blue-Button.Name")) iso.addDefault("Slots.Color.Empty-1.Name", " ");
+                if (!iso.contains("Slots.Color.Blue-Button.Name")) iso.addDefault("Slots.Color.Empty-1.Name", " ");
                 iso.addDefault("Slots.Color.Green-Button.Name", "Select &aGreen");
-                if (iso.contains("Slots.Color.Blue-Button.Name")) iso.addDefault("Slots.Color.Emtpty-2.Name", " ");
+                if (!iso.contains("Slots.Color.Blue-Button.Name")) iso.addDefault("Slots.Color.Empty-2.Name", " ");
                 iso.addDefault("Slots.Color.Blue-Button.Name", "Select &9Blue");
             }
             iso.addDefault("Slots.Color.Red-Button.Lore", new ArrayList<>());
-            if (!iso.contains("Slots.Color.Blue-Button.Name")) {
-                iso.addDefault("Slots.Color.Empty-1.Lore", new ArrayList<>());
-                iso.addDefault("Slots.Color.Empty-2.Lore", new ArrayList<>());
-            }
+            if (iso.contains("Slots.Color.Empty-1.Name")) iso.addDefault("Slots.Color.Empty-1.Lore", new ArrayList<>());
+            if (iso.contains("Slots.Color.Empty-2.Name")) iso.addDefault("Slots.Color.Empty-2.Lore", new ArrayList<>());
             iso.addDefault("Slots.Color.Green-Button.Lore", new ArrayList<>());
             iso.addDefault("Slots.Color.Blue-Button.Lore", new ArrayList<>());
             iso.copyDefaults();
@@ -65,17 +63,17 @@ public class ColorGUI {
             for (String s : itemsPath) {
                 boolean thorwError = false;
                 String subPath = null;
-                if (!iso.contains(s + ".Name")) {
+                if (!iso.contains(formatPath(s) + ".Name")) {
                     thorwError = true;
                     subPath = ".Name";
-                } else if (!iso.contains(s + ".Lore")) {
+                } else if (!iso.contains(formatPath(s) + ".Lore")) {
                     thorwError = true;
                     subPath = ".Lore";
                 }
                 if (thorwError) {
                     print("&c----------------------------------------------------");
                     print("&cISSUE FOUND IN ISLAND BORDER CONFIGURATION!!!");
-                    print("The path '&c" + s + subPath + "&f' is missing from '&c" + map.getValue().getName() + "&f' Language.");
+                    print("The path '&c" + formatPath(s) + subPath + "&f' is missing from '&c" + map.getValue().getName() + "&f' Language.");
                     print("&cCorrect this issue or you will not receive support from the developer.");
                     print("&c----------------------------------------------------");
                 }
@@ -121,5 +119,9 @@ public class ColorGUI {
 
     private String formatSlot(String string) {
         return string + ".Slot";
+    }
+
+    private String formatPath(String string) {
+        return pathMap.get(string);
     }
 }

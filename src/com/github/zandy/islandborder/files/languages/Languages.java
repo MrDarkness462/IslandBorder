@@ -13,12 +13,12 @@ import java.util.UUID;
 public class Languages {
     public enum LanguageEnum {
         CONSOLE_NOT_AVAILABLE("Console-Not-Available", "&7[&aIB&7] &cThis command can't be used in console.", true),
-        INFO_SUBCOMMAND_GUI("Info.SubCommand.GUI", "&7&oBorder settings menu."),
-        INFO_SUBCOMMAND_ENABLE("Info.SubCommand.Enable", "&7&oEnable border around island."),
-        INFO_SUBCOMMAND_DISABLE("Info.SubCommand.Disable", "&7&oDisable border around island."),
-        INFO_SUBCOMMAND_TOGGLE("Info.SubCommand.Toggle", "&7&oToggle border around island."),
-        INFO_SUBCOMMAND_COLOR("Info.SubCommand.Color", "&7&oChange island border color."),
-        INFO_SUBCOMMAND_LANGUAGE("Info.SubCommand.Color", "&7&oChange player language."),
+        INFO_SUBCOMMAND_GUI("Info.SubCommand.GUI", "&7&oBorder settings menu.", true),
+        INFO_SUBCOMMAND_ENABLE("Info.SubCommand.Enable", "&7&oEnable border around island.", true),
+        INFO_SUBCOMMAND_DISABLE("Info.SubCommand.Disable", "&7&oDisable border around island.", true),
+        INFO_SUBCOMMAND_TOGGLE("Info.SubCommand.Toggle", "&7&oToggle border around island.", true),
+        INFO_SUBCOMMAND_COLOR("Info.SubCommand.Color", "&7&oChange island border color.", true),
+        INFO_SUBCOMMAND_LANGUAGE("Info.SubCommand.Color", "&7&oChange player language.", true),
         NO_PERMISSION_COMMAND("No-Permission.Command", "&7[&aIB&7] &cYou don't have permission to use this command."),
         NO_PERMISSION_GUI("No-Permission.GUI", "&7[&aIB&7] &cYou don't have permission to access this menu."),
         NO_PERMISSION_COLOR("No-Permission.Color", "&7[&aIB&7] &cYou don't have permission to change border's color to [color]&c."),
@@ -107,7 +107,7 @@ public class Languages {
         }
         for (String iso : localeList) {
             FileManager locale = new FileManager("Language_" + iso, "Languages");
-            for (LanguageEnum langEnum : LanguageEnum.values()) if (!langEnum.ignoreInLanguage()) locale.addDefault(langEnum.getPath(), langEnum.getDefaultValue());
+            for (LanguageEnum langEnum : LanguageEnum.values()) if (!langEnum.ignoreInLanguage() && !iso.contains("EN")) locale.addDefault(langEnum.getPath(), langEnum.getDefaultValue());
             locale.copyDefaults();
             locale.save();
             localeFileMap.put(iso, locale);

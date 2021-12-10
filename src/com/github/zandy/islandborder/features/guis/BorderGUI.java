@@ -63,10 +63,8 @@ public class BorderGUI {
                 iso.addDefault("Slots.Border.Color-Button.Name", "&7Border Color: [color]");
             }
             iso.addDefault("Slots.Border.Enable-Button.Lore", new ArrayList<>());
-            if (!iso.contains("Slots.Border.Color-Button.Name")) {
-                iso.addDefault("Slots.Border.Empty-1.Lore", new ArrayList<>());
-                iso.addDefault("Slots.Border.Empty-2.Lore", new ArrayList<>());
-            }
+            if (iso.contains("Slots.Border.Empty-1.Name")) iso.addDefault("Slots.Border.Empty-1.Lore", new ArrayList<>());
+            if (iso.contains("Slots.Border.Empty-2.Name")) iso.addDefault("Slots.Border.Empty-2.Lore", new ArrayList<>());
             iso.addDefault("Slots.Border.Disable-Button.Lore", new ArrayList<>());
             iso.addDefault("Slots.Border.Color-Button.Lore", new ArrayList<>());
             iso.copyDefaults();
@@ -74,17 +72,17 @@ public class BorderGUI {
             for (String s : itemsPath) {
                 boolean throwError = false;
                 String subPath = null;
-                if (!iso.contains(s + ".Name")) {
+                if (!iso.contains(formatPath(s) + ".Name")) {
                     throwError = true;
                     subPath = ".Name";
-                } else if (!iso.contains(s + ".Lore")) {
+                } else if (!iso.contains(formatPath(s) + ".Lore")) {
                     throwError = true;
                     subPath = ".Lore";
                 }
                 if (throwError) {
                     print("&c----------------------------------------------------");
                     print("&cISSUE FOUND IN ISLAND BORDER CONFIGURATION!!!");
-                    print("The path '&c" + s + subPath + "&f' is missing from '&c" + map.getValue().getName() + "&f' Language.");
+                    print("The path '&c" + formatPath(s) + subPath + "&f' is missing from '&c" + map.getValue().getName() + "&f' Language.");
                     print("&cCorrect this issue or you will not receive support from the developer.");
                     print("&c----------------------------------------------------");
                 }
@@ -134,5 +132,9 @@ public class BorderGUI {
 
     private String formatSlot(String string) {
         return string + ".Slot";
+    }
+
+    private String formatPath(String string) {
+        return pathMap.get(string);
     }
 }

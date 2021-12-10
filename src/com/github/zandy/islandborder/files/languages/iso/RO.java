@@ -7,7 +7,7 @@ import static com.github.zandy.islandborder.files.languages.Languages.LanguageEn
 public class RO extends FileManager {
 
     public RO() {
-        super("RO");
+        super("Language_RO", "Languages");
         addDefault(NO_PERMISSION_COMMAND.getPath(), "&7[&aIB&7] &cNu ai permisiunea sa folosesti aceasta comanda.");
         addDefault(NO_PERMISSION_GUI.getPath(), "&7[&aIB&7] &cNu ai permisiunea sa accesezi acest meniu.");
         addDefault(NO_PERMISSION_COLOR.getPath(), "&7[&aIB&7] &cNu ai pemrisiunea sa schimbi culoarea border-ului in [color]&c.");
