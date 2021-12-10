@@ -5,13 +5,12 @@ import org.magenpurp.api.database.utils.Column;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.zandy.islandborder.files.Settings.SettingsEnum.DEFAULT_BORDER_COLOR;
-import static com.github.zandy.islandborder.files.Settings.SettingsEnum.DEFAULT_BORDER_STATE;
+import static com.github.zandy.islandborder.files.Settings.SettingsEnum.*;
 import static org.magenpurp.api.MagenAPI.getDatabase;
 import static org.magenpurp.api.database.utils.Column.ColumnType.VARCHAR;
 
 public class Database {
-    private final String state = DEFAULT_BORDER_STATE.getString(), color = DEFAULT_BORDER_COLOR.getString();
+    private final String state = DEFAULT_BORDER_STATE.getString(), color = DEFAULT_BORDER_COLOR.getString(), defaultLanguage = DEFAULT_LANGUAGE.getString();
 
     public Database() {
         List<Column> columns = new ArrayList<>();
@@ -19,6 +18,7 @@ public class Database {
         columns.add(new Column("UUID").setType(VARCHAR).setLength(40).setNotNull().setPrimaryKey());
         columns.add(new Column("Enabled").setType(VARCHAR).setLength(5).setNotNull().setDefault(state));
         columns.add(new Column("Color").setType(VARCHAR).setLength(5).setNotNull().setDefault(color));
+        columns.add(new Column("Language").setType(VARCHAR).setLength(3).setNotNull().setDefault(defaultLanguage));
         getDatabase().createTable("Island-Border", columns);
     }
 }

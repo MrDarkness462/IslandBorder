@@ -17,6 +17,11 @@ public class RO extends FileManager {
         addDefault(COMMAND_USAGE_CLICK.getPath(), "&e⦁ &f[name] &c&l[Click Aici]");
         addDefault(COMMAND_CLICK_TO_SUGGEST.getPath(), "&eClick pentru a sugera aceasta comanda.");
         addDefault(COMMAND_CLICK_TO_RUN.getPath(), "&eClick pentru a rula aceasta comanda.");
+        addDefault(LANGUAGE_DISPLAY.getPath(), "Romana");
+        addDefault(LANGUAGE_AVAILABLE.getPath(), "&7Limbi disponibile:");
+        addDefault(LANGUAGE_NOT_FOUND.getPath(), "&7[&aIB&7] &cLimba aleasa nu exista! Limbi disponibile:");
+        addDefault(LANGUAGE_LIST_FORMAT.getPath(), "&e⦁ &7[&e[languageAbbreviation]&7] &8| &f[languageName]");
+        addDefault(LANGUAGE_CHANGED.getPath(), "&7[&aIB&7] &fLimba a fost schimbata in &e[languageName] &f[&b[languageAbbreviation]&f]!");
         addDefault(BORDER_COOLDOWN.getPath(), "&7[&aIB&7] &fCooldown-ul border-ului expira in &e[seconds] [secondsFormatted]&f.");
         addDefault(BORDER_TOGGLED_ON.getPath(), "&7[&aIB&7] &fBorder-ul este acum vizibil cu culoarea [color]&f.");
         addDefault(BORDER_TOGGLED_OFF.getPath(), "&7[&aIB&7] &fBorder-ul este acum invizibil.");

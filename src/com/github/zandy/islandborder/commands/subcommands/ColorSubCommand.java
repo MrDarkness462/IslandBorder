@@ -51,6 +51,8 @@ public class ColorSubCommand extends SubCommand {
     }
 
     private void sendHelp(Player p) {
+        p.sendMessage(" ");
+        p.sendMessage(" ");
         p.sendMessage(COMMAND_USAGE_WRONG.getString(p.getUniqueId()));
         sendTextComponent(p, COMMAND_USAGE_EXAMPLE.getString(p.getUniqueId()).replace("[command]", COMMAND_USAGE_COLOR.getString(p.getUniqueId())), "/isborder color ", COMMAND_CLICK_TO_SUGGEST.getString(p.getUniqueId()), SUGGEST_COMMAND);
         for (String s : asList("Red", "Green", "Blue")) sendTextComponent(p, COMMAND_USAGE_CLICK.getString(p.getUniqueId()).replace("[name]", getLocaleFiles().get(getPlayerLocale().get(p.getUniqueId())).getString("Color." + s)), "/isborder color " + s, COMMAND_CLICK_TO_RUN.getString(p.getUniqueId()), RUN_COMMAND);

@@ -12,6 +12,8 @@ import pl.islandworld.api.events.IslandLeaveEvent;
 import pl.islandworld.entity.SimpleIsland;
 
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.PLACEHOLDERS_SIZE_NOT_ON_ISLAND;
+import static org.bukkit.Bukkit.getPlayer;
+import static org.bukkit.Bukkit.getPluginManager;
 import static org.magenpurp.api.MagenAPI.*;
 import static pl.islandworld.Config.ISLE_SIZE;
 
@@ -56,6 +58,7 @@ public class IslandWorld extends BorderSupport implements Listener {
             public void run() {
                 if (!islandWorldAPI.isInsideIsland(p, e.getIsland()) || !playerData.getBorderState()) return;
                 send(p);
+                getPluginManager().callEvent(new com.github.zandy.islandborder.api.island.IslandEnterEvent(p));
             }
         }.runTaskLater(getPlugin(), 10);
     }
@@ -71,6 +74,7 @@ public class IslandWorld extends BorderSupport implements Listener {
             public void run() {
                 if (!islandWorldAPI.isInsideIsland(p, e.getIsland()) || !playerData.getBorderState()) return;
                 send(p);
+                getPluginManager().callEvent(new com.github.zandy.islandborder.api.island.IslandEnterEvent(p));
             }
         }.runTaskLater(getPlugin(), 10);
     }
@@ -78,5 +82,6 @@ public class IslandWorld extends BorderSupport implements Listener {
     @EventHandler
     private void onIslandLeave(IslandLeaveEvent e) {
         remove(e.getPlayer());
+        getPluginManager().callEvent(new com.github.zandy.islandborder.api.island.IslandLeaveEvent(e.getPlayer()));
     }
 }

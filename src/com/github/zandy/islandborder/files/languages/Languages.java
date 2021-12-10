@@ -28,6 +28,11 @@ public class Languages {
         COMMAND_USAGE_COLOR("Command.Usage.Color", "/isborder color <&cRed&f, &aGreen&f, &9Blue&f>"),
         COMMAND_CLICK_TO_SUGGEST("Command.Click-To.Suggest", "&eClick to suggest this command."),
         COMMAND_CLICK_TO_RUN("Command.Click-To.Run", "&eClick to run this command."),
+        LANGUAGE_DISPLAY("Language.Display", "English"),
+        LANGUAGE_AVAILABLE("Language.Available", "&7Available languages:"),
+        LANGUAGE_NOT_FOUND("Language.Not-Found", "&7[&aIB&7] &cLanguage not found! Available languages:"),
+        LANGUAGE_LIST_FORMAT("Language.List-Format", "&e⦁ &7[&e[languageAbbreviation]&7] &8| &f[languageName]"),
+        LANGUAGE_CHANGED("Language.Changed", "&7[&aIB&7] &fLanguage changed to &e[languageName] &f[&b[languageAbbreviation]&f]!"),
         BORDER_COOLDOWN("Border.Cooldown", "&7[&aIB&7] &fBorder cooldown expires in &e[seconds] [secondsFormatted]&f."),
         BORDER_TOGGLED_ON("Border.Toggled.On", "&7[&aIB&7] &fThe Border is now shown with the color [color]&f."),
         BORDER_TOGGLED_OFF("Border.Toggled.On", "&7[&aIB&7] &fThe Border is now hidden."),
@@ -84,6 +89,7 @@ public class Languages {
     }
     private static HashMap<UUID, String> playerLocaleMap = new HashMap<>();
     private static HashMap<String, FileManager> localeFileMap = new HashMap<>();
+    private final static List<String> languageAbbreviations = new ArrayList<>();
     private final List<String> isoList = new ArrayList<>();
 
     public Languages() {
@@ -105,6 +111,7 @@ public class Languages {
             locale.save();
             localeFileMap.put(iso, locale);
             isoList.add(iso);
+            languageAbbreviations.add(iso);
         }
     }
 
@@ -114,5 +121,9 @@ public class Languages {
 
     public static HashMap<UUID, String> getPlayerLocale() {
         return playerLocaleMap;
+    }
+
+    public static List<String> getLanguageAbbreviations() {
+        return languageAbbreviations;
     }
 }

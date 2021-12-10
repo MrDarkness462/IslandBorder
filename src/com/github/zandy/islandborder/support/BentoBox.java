@@ -10,6 +10,7 @@ import world.bentobox.bentobox.database.objects.Island;
 
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.PLACEHOLDERS_SIZE_NOT_ON_ISLAND;
 import static org.bukkit.Bukkit.getPlayer;
+import static org.bukkit.Bukkit.getPluginManager;
 import static org.magenpurp.api.MagenAPI.*;
 
 public class BentoBox extends BorderSupport implements Listener {
@@ -54,6 +55,7 @@ public class BentoBox extends BorderSupport implements Listener {
             public void run() {
                 if (!inSkyBlockWorld(p) || !playerData.getBorderState()) return;
                 send(p);
+                getPluginManager().callEvent(new com.github.zandy.islandborder.api.island.IslandEnterEvent(p));
             }
         }.runTaskLater(getPlugin(), 10);
     }
@@ -69,6 +71,7 @@ public class BentoBox extends BorderSupport implements Listener {
             public void run() {
                 if (!inSkyBlockWorld(p) || !playerData.getBorderState()) return;
                 send(p);
+                getPluginManager().callEvent(new com.github.zandy.islandborder.api.island.IslandEnterEvent(p));
             }
         }.runTaskLater(getPlugin(), 10);
     }
@@ -81,5 +84,6 @@ public class BentoBox extends BorderSupport implements Listener {
     @EventHandler
     private void onIslandExit(IslandExitEvent e) {
         remove(getPlayer(e.getPlayerUUID()));
+        getPluginManager().callEvent(new com.github.zandy.islandborder.api.island.IslandLeaveEvent(getPlayer(e.getPlayerUUID())));
     }
 }
