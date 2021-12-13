@@ -10,6 +10,7 @@ import com.github.zandy.islandborder.files.Settings;
 import com.github.zandy.islandborder.files.guis.BorderGUIFile;
 import com.github.zandy.islandborder.files.guis.ColorGUIFile;
 import com.github.zandy.islandborder.files.languages.Languages;
+import com.github.zandy.islandborder.listeners.PluginEvents;
 import com.github.zandy.islandborder.player.PlayerEngine;
 import com.github.zandy.islandborder.storage.Database;
 import com.github.zandy.islandborder.support.*;
@@ -83,6 +84,7 @@ public class Main extends JavaPlugin {
         print("");
         print("Loading Functionality...");
         border = new Border();
+        new PluginEvents();
         print(" ");
         print("Loading Commands...");
         IslandBorderCommand islandBorderCommand = new IslandBorderCommand();

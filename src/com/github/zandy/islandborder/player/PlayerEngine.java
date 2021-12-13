@@ -47,7 +47,7 @@ public class PlayerEngine implements Listener {
         if (!hasDBAccount(uuid)) createAccount(uuid);
         if (hasDBAccount(uuid)) cachedPlayers.add(uuid);
         if (!getMySQLCredentials().isEnabled()) patchProfile(uuid);
-        if (!PlayerData.isCached(uuid)) new PlayerData(uuid, parseBoolean(getDatabase().getString(uuid, "Enabled", "Island-Border")), BorderColor.valueOf(getDatabase().getString(uuid, "Color", "Island-Border").toUpperCase()));
+        if (!PlayerData.isCached(uuid)) new PlayerData(uuid, parseBoolean(getDatabase().getString(uuid, "Enabled", "Island-Border")), BorderColor.valueOf(getDatabase().getString(uuid, "Color", "Island-Border").toUpperCase()), getDatabase().getString(uuid, "Language", "Island-Border"));
     }
 
     private void createAccount(UUID uuid) {

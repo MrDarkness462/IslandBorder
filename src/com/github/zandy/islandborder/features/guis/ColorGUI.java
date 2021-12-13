@@ -89,28 +89,32 @@ public class ColorGUI {
         GUI gui = new GUI(p, inventoryType, COLOR_GUI_TITLE.getString(uuid));
         String color = iso.getString("Color." + getVersionSupport().makeFirstLetterUppercase(playerData.getBorderColor().name().toLowerCase()));
         for (String s : itemsPath) {
-            ItemBuilder item = materialsMap.get(s).getItem().setDisplayName(iso.getString(pathMap.get(s + ".Name")).replace("[color]", color));
-            if (iso.getStringList(s + ".Lore").size() > 0) item.setLore(iso.getStringList(pathMap.get(s + ".Lore")));
+            ItemBuilder item = materialsMap.get(s).getItem().setDisplayName(iso.getString(pathMap.get(s) + ".Name").replace("[color]", color));
+            if (iso.getStringList(s + ".Lore").size() > 0) item.setLore(iso.getStringList(pathMap.get(s) + ".Lore"));
             gui.addItem(new GuiItem(item.build(), slotsMap.get(s)).addClickAction(new ClickAction() {
                 @Override
                 public void onClick(GuiItem guiItem, GUI gui) {
                     switch (s.split("\\.")[1]) {
                         case "Red-Button": {
                             playerData.setBorderColor(RED);
+                            p.closeInventory();
                             break;
                         }
                         case "Green-Button": {
                             playerData.setBorderColor(GREEN);
+                            p.closeInventory();
                             break;
                         }
                         case "Blue-Button": {
                             playerData.setBorderColor(BLUE);
+                            p.closeInventory();
                             break;
                         }
                     }
                 }
             }));
         }
+        gui.open();
     }
 
     private String formatMaterial(String string) {

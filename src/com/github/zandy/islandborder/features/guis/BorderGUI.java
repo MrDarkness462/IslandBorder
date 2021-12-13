@@ -100,18 +100,20 @@ public class BorderGUI {
         for (String s : itemsPath) {
             Materials finalMaterial = materialsMap.get(s);
             if (s.contains("Color-Button")) finalMaterial = borderColorMaterialsMap.get(playerData.getBorderColor());
-            ItemBuilder item = finalMaterial.getItem().setDisplayName(iso.getString(pathMap.get(s + ".Name")).replace("[color]", color));
-            if (iso.getStringList(s + ".Lore").size() > 0) item.setLore(iso.getStringList(pathMap.get(s + ".Lore")));
+            ItemBuilder item = finalMaterial.getItem().setDisplayName(iso.getString(pathMap.get(s) + ".Name").replace("[color]", color));
+            if (iso.getStringList(s + ".Lore").size() > 0) item.setLore(iso.getStringList(pathMap.get(s) + ".Lore"));
             gui.addItem(new GuiItem(item.build(), slotsMap.get(s)).addClickAction(new ClickAction() {
                 @Override
                 public void onClick(GuiItem guiItem, GUI gui) {
                     switch (s.split("\\.")[1]) {
                         case "Enable-Button": {
                             getBorder().setState(uuid, true);
+                            p.closeInventory();
                             break;
                         }
                         case "Disable-Button": {
                             getBorder().setState(uuid, false);
+                            p.closeInventory();
                             break;
                         }
                         case "Color-Button": {

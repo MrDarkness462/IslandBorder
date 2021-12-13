@@ -23,7 +23,6 @@ import static org.magenpurp.api.MagenAPI.getPlugin;
 import static org.magenpurp.api.MagenAPI.getVersionSupport;
 
 public class Border {
-    private HashMap<UUID, List<BukkitTask>> bukkitTasksMap = new HashMap<>();
     private final List<UUID> cooldownList = new ArrayList<>();
     private final boolean isCooldownEnabled;
     private final int cooldownSeconds;
@@ -43,7 +42,6 @@ public class Border {
         if (enabled) {
             if (isEnabled(uuid)) {
                 getPlayer(uuid).sendMessage(BORDER_ALREADY_TOGGLED_ON.getString(uuid));
-                cancelCooldown(uuid);
             } else {
                 playerData.setBorderState(true);
                 getPlayer(uuid).sendMessage(BORDER_TOGGLED_ON.getString(uuid).replace("[color]", getLocaleFiles().get(getPlayerLocale().get(uuid)).getString("Color." + getVersionSupport().makeFirstLetterUppercase(playerData.getBorderColor().name().toLowerCase()))));
@@ -51,7 +49,6 @@ public class Border {
         } else {
             if (!isEnabled(uuid)) {
                 getPlayer(uuid).sendMessage(BORDER_ALREADY_TOGGLED_OFF.getString(uuid));
-                cancelCooldown(uuid);
             } else {
                 playerData.setBorderState(false);
                 getPlayer(uuid).sendMessage(BORDER_TOGGLED_OFF.getString(uuid));
@@ -81,12 +78,6 @@ public class Border {
         return PlayerData.get(uuid).getBorderState();
     }
 
-    private void cancelCooldown(UUID uuid) {
-        if (!bukkitTasksMap.containsKey(uuid)) return;
-        for (BukkitTask bukkitTask : bukkitTasksMap.get(uuid)) bukkitTask.cancel();
-        bukkitTasksMap.remove(uuid);
-    }
-
     private boolean applyCooldown(UUID uuid, PlayerData playerData) {
         if (!cooldownList.contains(uuid)) {
             cooldownList.add(uuid);
@@ -97,16 +88,13 @@ public class Border {
                     playerData.setCooldownSeconds(playerData.getCooldownSeconds() - 1);
                 }
             }.runTaskTimerAsynchronously(getPlugin(), 20, 20);
-            List<BukkitTask> bukkitTasks = new ArrayList<>(asList(cooldownUpdateTask));
-            bukkitTasks.add(new BukkitRunnable() {
+            new BukkitRunnable() {
                 @Override
                 public void run() {
                     cooldownUpdateTask.cancel();
                     cooldownList.remove(uuid);
-                    bukkitTasksMap.remove(uuid);
                 }
-            }.runTaskLaterAsynchronously(getPlugin(), cooldownSeconds * 20L));
-            bukkitTasksMap.put(uuid, bukkitTasks);
+            }.runTaskLaterAsynchronously(getPlugin(), cooldownSeconds * 20L);
             return true;
         } else {
             String time = playerData.getCooldownSeconds() > 1 ? UNITS_SECONDS.getString(uuid) : UNITS_SECOND.getString(uuid);

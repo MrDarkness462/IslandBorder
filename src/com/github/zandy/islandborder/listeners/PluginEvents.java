@@ -8,8 +8,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import static com.github.zandy.islandborder.Main.getBorderSupport;
 import static org.magenpurp.api.MagenAPI.getPlugin;
+import static org.magenpurp.api.MagenAPI.registerEvent;
 
 public class PluginEvents implements Listener {
+
+    public PluginEvents() {
+        registerEvent(this);
+    }
 
     @EventHandler
     private void onWorldChange(PlayerChangedWorldEvent e) {
