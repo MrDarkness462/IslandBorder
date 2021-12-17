@@ -1,6 +1,7 @@
 package com.github.zandy.islandborder.player;
 
-import org.magenpurp.api.versionsupport.BorderColor;
+import com.github.zandy.bamboolib.database.Database;
+import com.github.zandy.bamboolib.versionsupport.utils.BorderColor;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -8,7 +9,6 @@ import java.util.UUID;
 import static com.github.zandy.islandborder.Main.getBorderSupport;
 import static com.github.zandy.islandborder.files.languages.Languages.getPlayerLocale;
 import static org.bukkit.Bukkit.getPlayer;
-import static org.magenpurp.api.MagenAPI.getDatabase;
 
 public class PlayerData {
     private final static HashMap<UUID, PlayerData> playerDataMap = new HashMap<>();
@@ -47,14 +47,14 @@ public class PlayerData {
 
     public void setBorderState(Boolean borderState) {
         this.borderState = borderState;
-        getDatabase().setString(uuid, borderState.toString(), "Enabled", "Island-Border");
+        Database.getInstance().setString(uuid, borderState.toString(), "Enabled", "Island-Border");
         if (borderState) getBorderSupport().send(getPlayer(uuid));
         else getBorderSupport().remove(getPlayer(uuid));
     }
 
     public void setBorderColor(BorderColor borderColor) {
         this.borderColor = borderColor;
-        getDatabase().setString(uuid, borderColor.name(), "Color", "Island-Border");
+        Database.getInstance().setString(uuid, borderColor.name(), "Color", "Island-Border");
         if (borderState) getBorderSupport().send(getPlayer(uuid));
     }
 

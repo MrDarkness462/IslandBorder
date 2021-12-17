@@ -1,9 +1,11 @@
 package com.github.zandy.islandborder.commands.subcommands;
 
+import com.github.zandy.bamboolib.command.SubCommand;
+import com.github.zandy.bamboolib.database.Database;
+import com.github.zandy.bamboolib.utils.BambooUtils;
 import com.github.zandy.islandborder.api.player.PlayerLanguageChangeEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.magenpurp.api.command.SubCommand;
 
 import java.util.UUID;
 
@@ -11,13 +13,11 @@ import static com.github.zandy.islandborder.files.languages.Languages.*;
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.*;
 import static net.md_5.bungee.api.chat.ClickEvent.Action.RUN_COMMAND;
 import static org.bukkit.Bukkit.getPluginManager;
-import static org.magenpurp.api.MagenAPI.getDatabase;
-import static org.magenpurp.api.utils.TextComponentUtil.sendTextComponent;
 
 public class LanguageSubCommand extends SubCommand {
 
     public LanguageSubCommand() {
-        super("language", new String[]{"isborder.language", "isborder.*"});
+        super("language", INFO_SUBCOMMAND_LANGUAGE.getString(), new String[]{"isborder.language", "isborder.*"});
     }
 
     @Override
@@ -32,12 +32,12 @@ public class LanguageSubCommand extends SubCommand {
         String argument = arg[0].toUpperCase();
         if (!getLanguageAbbreviations().contains(argument)) {
             p.sendMessage(LANGUAGE_NOT_FOUND.getString(uuid));
-            for (String lang : getLanguageAbbreviations()) sendTextComponent(p, LANGUAGE_LIST_FORMAT.getString(uuid).replace("[languageAbbreviation]", lang).replace("[languageName]", getLocaleFiles().get(lang).getString(LANGUAGE_DISPLAY.getPath())), "/isborder language " + lang, COMMAND_CLICK_TO_RUN.getString(uuid), RUN_COMMAND);
+            for (String lang : getLanguageAbbreviations()) BambooUtils.sendTextComponent(p, LANGUAGE_LIST_FORMAT.getString(uuid).replace("[languageAbbreviation]", lang).replace("[languageName]", getLocaleFiles().get(lang).getString(LANGUAGE_DISPLAY.getPath())), "/isborder language " + lang, COMMAND_CLICK_TO_RUN.getString(uuid), RUN_COMMAND);
             return;
         }
         String oldISO = getPlayerLocale().get(uuid);
         getPlayerLocale().put(uuid, argument);
-        getDatabase().setString(uuid, argument, "Language", "Island-Border");
+        Database.getInstance().setString(uuid, argument, "Language", "Island-Border");
         p.sendMessage(LANGUAGE_CHANGED.getString(uuid).replace("[languageName]", LANGUAGE_DISPLAY.getString(uuid)).replace("[languageAbbreviation]", argument));
         getPluginManager().callEvent(new PlayerLanguageChangeEvent(p, oldISO, argument));
     }
@@ -47,7 +47,7 @@ public class LanguageSubCommand extends SubCommand {
         p.sendMessage(" ");
         p.sendMessage(COMMAND_USAGE_WRONG.getString(p.getUniqueId()));
         p.sendMessage(LANGUAGE_AVAILABLE.getString(p.getUniqueId()));
-        for (String lang : getLanguageAbbreviations()) sendTextComponent(p, LANGUAGE_LIST_FORMAT.getString(p.getUniqueId()).replace("[languageAbbreviation]", lang).replace("[languageName]", getLocaleFiles().get(lang).getString(LANGUAGE_DISPLAY.getPath())), "/isborder language " + lang, COMMAND_CLICK_TO_RUN.getString(p.getUniqueId()), RUN_COMMAND);
+        for (String lang : getLanguageAbbreviations()) BambooUtils.sendTextComponent(p, LANGUAGE_LIST_FORMAT.getString(p.getUniqueId()).replace("[languageAbbreviation]", lang).replace("[languageName]", getLocaleFiles().get(lang).getString(LANGUAGE_DISPLAY.getPath())), "/isborder language " + lang, COMMAND_CLICK_TO_RUN.getString(p.getUniqueId()), RUN_COMMAND);
     }
 
     @Override

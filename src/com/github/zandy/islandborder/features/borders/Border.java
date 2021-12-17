@@ -1,14 +1,15 @@
 package com.github.zandy.islandborder.features.borders;
 
+import com.github.zandy.bamboolib.BambooLib;
+import com.github.zandy.bamboolib.utils.BambooUtils;
+import com.github.zandy.bamboolib.versionsupport.utils.BorderColor;
 import com.github.zandy.islandborder.files.languages.Languages.LanguageEnum;
 import com.github.zandy.islandborder.player.PlayerData;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.magenpurp.api.versionsupport.BorderColor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,12 +18,10 @@ import static com.github.zandy.islandborder.files.Settings.SettingsEnum.COOLDOWN
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.*;
 import static com.github.zandy.islandborder.files.languages.Languages.getLocaleFiles;
 import static com.github.zandy.islandborder.files.languages.Languages.getPlayerLocale;
-import static java.util.Arrays.asList;
 import static org.bukkit.Bukkit.getPlayer;
-import static org.magenpurp.api.MagenAPI.getPlugin;
-import static org.magenpurp.api.MagenAPI.getVersionSupport;
 
 public class Border {
+    private static Border instance = null;
     private final List<UUID> cooldownList = new ArrayList<>();
     private final boolean isCooldownEnabled;
     private final int cooldownSeconds;
@@ -44,7 +43,7 @@ public class Border {
                 getPlayer(uuid).sendMessage(BORDER_ALREADY_TOGGLED_ON.getString(uuid));
             } else {
                 playerData.setBorderState(true);
-                getPlayer(uuid).sendMessage(BORDER_TOGGLED_ON.getString(uuid).replace("[color]", getLocaleFiles().get(getPlayerLocale().get(uuid)).getString("Color." + getVersionSupport().makeFirstLetterUppercase(playerData.getBorderColor().name().toLowerCase()))));
+                getPlayer(uuid).sendMessage(BORDER_TOGGLED_ON.getString(uuid).replace("[color]", getLocaleFiles().get(getPlayerLocale().get(uuid)).getString("Color." + BambooUtils.capitalizeFirstLetter(playerData.getBorderColor().name().toLowerCase()))));
             }
         } else {
             if (!isEnabled(uuid)) {
@@ -71,7 +70,7 @@ public class Border {
         }
         if (isCooldownEnabled && !applyCooldown(uuid, playerData)) return;
         playerData.setBorderColor(color);
-        p.sendMessage(COLOR_CHANGED.getString(uuid).replace("[color]", getLocaleFiles().get(getPlayerLocale().get(uuid)).getString("Color." + getVersionSupport().makeFirstLetterUppercase(playerData.getBorderColor().name().toLowerCase()))));
+        p.sendMessage(COLOR_CHANGED.getString(uuid).replace("[color]", getLocaleFiles().get(getPlayerLocale().get(uuid)).getString("Color." + BambooUtils.capitalizeFirstLetter(playerData.getBorderColor().name().toLowerCase()))));
     }
 
     public boolean isEnabled(UUID uuid) {
@@ -87,19 +86,24 @@ public class Border {
                 public void run() {
                     playerData.setCooldownSeconds(playerData.getCooldownSeconds() - 1);
                 }
-            }.runTaskTimerAsynchronously(getPlugin(), 20, 20);
+            }.runTaskTimerAsynchronously(BambooLib.getPluginInstance(), 20, 20);
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     cooldownUpdateTask.cancel();
                     cooldownList.remove(uuid);
                 }
-            }.runTaskLaterAsynchronously(getPlugin(), cooldownSeconds * 20L);
+            }.runTaskLaterAsynchronously(BambooLib.getPluginInstance(), cooldownSeconds * 20L);
             return true;
         } else {
             String time = playerData.getCooldownSeconds() > 1 ? UNITS_SECONDS.getString(uuid) : UNITS_SECOND.getString(uuid);
             getPlayer(uuid).sendMessage(BORDER_COOLDOWN.getString(uuid).replace("[seconds]", String.valueOf(playerData.getCooldownSeconds())).replace("[secondsFormatted]", time));
             return false;
         }
+    }
+
+    public static Border getInstance() {
+        if (instance == null) instance = new Border();
+        return instance;
     }
 }

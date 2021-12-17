@@ -1,13 +1,13 @@
 package com.github.zandy.islandborder;
 
+import com.github.zandy.bamboolib.BambooLib;
+import com.github.zandy.bamboolib.utils.BambooUtils;
+import com.github.zandy.bamboolib.utils.SpigotUpdater;
+import com.github.zandy.bamboolib.versionsupport.VersionSupport;
 import com.github.zandy.islandborder.commands.IslandBorderCommand;
 import com.github.zandy.islandborder.commands.subcommands.*;
 import com.github.zandy.islandborder.features.Placeholders;
-import com.github.zandy.islandborder.features.borders.Border;
-import com.github.zandy.islandborder.features.guis.BorderGUI;
-import com.github.zandy.islandborder.features.guis.ColorGUI;
 import com.github.zandy.islandborder.files.Settings;
-import com.github.zandy.islandborder.files.guis.BorderGUIFile;
 import com.github.zandy.islandborder.files.guis.ColorGUIFile;
 import com.github.zandy.islandborder.files.languages.Languages;
 import com.github.zandy.islandborder.listeners.PluginEvents;
@@ -15,135 +15,117 @@ import com.github.zandy.islandborder.player.PlayerEngine;
 import com.github.zandy.islandborder.storage.Database;
 import com.github.zandy.islandborder.support.*;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.magenpurp.api.MagenAPI;
 
 import static com.github.zandy.islandborder.files.Settings.SettingsEnum.*;
-import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.*;
-import static org.magenpurp.api.MagenAPI.*;
-import static org.magenpurp.api.utils.SpigotUpdater.checkForUpdates;
 
 public class Main extends JavaPlugin {
-    private static BorderGUI borderGUI;
-    private static ColorGUI colorGUI;
-    private static Border border;
     private static BorderSupport borderSupport;
     private static PlayerEngine playerEngine;
 
     @Override
     public void onEnable() {
-        new MagenAPI(this).initDB();
-        print("&f&m--------------------------");
-        print("   &fIsland Border " + getDescription().getVersion());
-        print(" ");
-        print("Initializing...");
-        print(" ");
-        if (!getVersionSupport().contains(8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18)) {
-            print("&c&lCan't run on: " + getVersion());
-            print(" ");
-            print("&f&m--------------------------");
+        BambooLib.setPluginInstance(this);
+        BambooUtils.consolePrint("&f&m--------------------------");
+        BambooUtils.consolePrint("   &fIsland Border " + getDescription().getVersion());
+        BambooUtils.consolePrint(" ");
+        BambooUtils.consolePrint("Initializing...");
+        BambooUtils.consolePrint(" ");
+        if (!BambooUtils.isVersion(8, 12, 17)) {
+            BambooUtils.consolePrint("&c&lCan't run on: " + VersionSupport.getVersion());
+            BambooUtils.consolePrint(" ");
+            BambooUtils.consolePrint("&f&m--------------------------");
             setEnabled(false);
             return;
         }
-        print("&lRunning on: " + getVersion());
-        print(" ");
-        print("&lFinding SkyBlock plugin...");
-        print(" ");
-        if (isPluginEnabled("ASkyBlock")) {
+        BambooUtils.consolePrint("&lRunning on: " + VersionSupport.getVersion());
+        BambooUtils.consolePrint(" ");
+        BambooUtils.consolePrint("&lFinding SkyBlock plugin...");
+        BambooUtils.consolePrint(" ");
+        if (BambooUtils.isPluginEnabled("ASkyBlock")) {
             borderSupport = new ASkyBlock();
-            print("&eASkyBlock &fplugin found!");
-        } else if (isPluginEnabled("AcidIsland")) {
+            BambooUtils.consolePrint("&eASkyBlock &fplugin found!");
+        } else if (BambooUtils.isPluginEnabled("AcidIsland")) {
             borderSupport = new AcidIsland();
-            print("&eAcidIsland &fplugin found!");
-        } else if (isPluginEnabled("BentoBox")) {
+            BambooUtils.consolePrint("&eAcidIsland &fplugin found!");
+        } else if (BambooUtils.isPluginEnabled("BentoBox")) {
             borderSupport = new BentoBox();
-            print("&eBentoBox &fplugin found!");
-        } else if (isPluginEnabled("uSkyBlock")) {
+            BambooUtils.consolePrint("&eBentoBox &fplugin found!");
+        } else if (BambooUtils.isPluginEnabled("uSkyBlock")) {
             borderSupport = new USkyBlock();
-            print("&euSkyBlock &fplugin found!");
-        } else if (isPluginEnabled("IslandWorld")) {
+            BambooUtils.consolePrint("&euSkyBlock &fplugin found!");
+        } else if (BambooUtils.isPluginEnabled("IslandWorld")) {
             borderSupport = new IslandWorld();
-            print("&eIslandWorld &fplugin found!");
+            BambooUtils.consolePrint("&eIslandWorld &fplugin found!");
         } else {
-            print("&cNO SKYBLOCK PLUGIN FOUND! DISABLING...");
-            print(" ");
-            print("&f&m--------------------------");
+            BambooUtils.consolePrint("&cNO SKYBLOCK PLUGIN FOUND! DISABLING...");
+            BambooUtils.consolePrint(" ");
+            BambooUtils.consolePrint("&f&m--------------------------");
             setEnabled(false);
             return;
         }
-        print(" ");
-        print("Loading Settings...");
+        BambooUtils.consolePrint(" ");
+        BambooUtils.consolePrint("Loading Settings...");
         new Settings();
-        print(" ");
-        print("Loading Languages...");
+        BambooUtils.consolePrint(" ");
+        BambooUtils.consolePrint("Loading Languages...");
         new Languages();
-        print(" ");
-        print("Initializing Database & Accounts...");
-        print("Database type: " + getVersionSupport().makeFirstLetterUppercase(getDatabase().getDatabaseType().name().toLowerCase()).replace("_", " "));
+        BambooUtils.consolePrint(" ");
+        BambooUtils.consolePrint("Initializing Database & Accounts...");
         new Database();
+        BambooUtils.consolePrint("Database type: " + BambooUtils.capitalizeFirstLetter(com.github.zandy.bamboolib.database.Database.getInstance().getDatabaseType().name().toLowerCase()).replace("_", " "));
         playerEngine = new PlayerEngine();
-        print("");
-        print("Loading Functionality...");
-        border = new Border();
+        BambooUtils.consolePrint("");
+        BambooUtils.consolePrint("Loading Functionality...");
         new PluginEvents();
-        print(" ");
-        print("Loading Commands...");
+        BambooUtils.consolePrint(" ");
+        BambooUtils.consolePrint("Loading Commands...");
         IslandBorderCommand islandBorderCommand = new IslandBorderCommand();
         if (SUBCOMMAND_ENABLED_GUI.getBoolean()) {
-            print(" ");
-            print("Loading GUIs...");
-            borderGUI = new BorderGUI();
+            BambooUtils.consolePrint(" ");
+            BambooUtils.consolePrint("Loading GUIs...");
             new ColorGUIFile();
-            colorGUI = new ColorGUI();
-            islandBorderCommand.addSubCommand(new GUISubCommand(), INFO_SUBCOMMAND_GUI.getString());
+            islandBorderCommand.addSubCommand(new GUISubCommand());
         }
-        if (SUBCOMMAND_ENABLED_BORDER_ENABLE.getBoolean()) islandBorderCommand.addSubCommand(new EnableSubCommand(), INFO_SUBCOMMAND_ENABLE.getString());
-        if (SUBCOMMAND_ENABLED_BORDER_DISABLE.getBoolean()) islandBorderCommand.addSubCommand(new DisableSubCommand(), INFO_SUBCOMMAND_DISABLE.getString());
-        if (SUBCOMMAND_ENABLED_BORDER_TOGGLE.getBoolean()) islandBorderCommand.addSubCommand(new ToggleSubCommand(), INFO_SUBCOMMAND_TOGGLE.getString());
-        if (SUBCOMMAND_ENABLED_BORDER_COLOR.getBoolean()) islandBorderCommand.addSubCommand(new ColorSubCommand(), INFO_SUBCOMMAND_COLOR.getString());
-        if (SUBCOMMAND_ENABLED_BORDER_LANGUAGE.getBoolean()) islandBorderCommand.addSubCommand(new LanguageSubCommand(), INFO_SUBCOMMAND_LANGUAGE.getString());
-        getVersionSupport().registerCommand(islandBorderCommand);
-        print(" ");
-        print("Looking for hooks...");
-        print(" ");
+        if (SUBCOMMAND_ENABLED_BORDER_ENABLE.getBoolean()) islandBorderCommand.addSubCommand(new EnableSubCommand());
+        if (SUBCOMMAND_ENABLED_BORDER_DISABLE.getBoolean()) islandBorderCommand.addSubCommand(new DisableSubCommand());
+        if (SUBCOMMAND_ENABLED_BORDER_TOGGLE.getBoolean()) islandBorderCommand.addSubCommand(new ToggleSubCommand());
+        if (SUBCOMMAND_ENABLED_BORDER_COLOR.getBoolean()) islandBorderCommand.addSubCommand(new ColorSubCommand());
+        if (SUBCOMMAND_ENABLED_BORDER_LANGUAGE.getBoolean()) islandBorderCommand.addSubCommand(new LanguageSubCommand());
+        VersionSupport.getInstance().registerCommand(islandBorderCommand);
+        BambooUtils.consolePrint(" ");
+        BambooUtils.consolePrint("Looking for hooks...");
+        BambooUtils.consolePrint(" ");
         boolean enablePlaceholders = false;
-        if (isPluginEnabled("PlaceholderAPI")) {
-            print("PlaceholderAPI hook found!");
+        if (BambooUtils.isPluginEnabled("PlaceholderAPI")) {
+            BambooUtils.consolePrint("PlaceholderAPI hook found!");
             enablePlaceholders = true;
         }
-        if (isPluginEnabled("MVdWPlaceholderAPI")) {
-            print("MVdWPlaceholderAPI hook found!");
+        if (BambooUtils.isPluginEnabled("MVdWPlaceholderAPI")) {
+            BambooUtils.consolePrint("MVdWPlaceholderAPI hook found!");
             enablePlaceholders = true;
         }
-        if (!enablePlaceholders) print("No hooks found!");
+        if (!enablePlaceholders) BambooUtils.consolePrint("No hooks found!");
         else new Placeholders();
-        print(" ");
-        checkForUpdates(56320);
-        print(" ");
-        print("&aIsland Border loaded successfully!");
-        print("&f&m--------------------------");
+        BambooUtils.consolePrint(" ");
+        SpigotUpdater.getInstance().checkForUpdates(56320);
+        BambooUtils.consolePrint(" ");
+        BambooUtils.consolePrint("&aIsland Border loaded successfully!");
+        BambooUtils.consolePrint("&f&m--------------------------");
     }
 
     @Override
     public void onDisable() {
         if (!isEnabled()) return;
-        print("&f&m--------------------------");
-        print("   &fIsland Border " + getDescription().getVersion());
-        print(" ");
-        print("&cDisabling...");
-        print(" ");
-        print("&lDisabling Database...");
-        getDatabase().close();
-        print(" ");
-        print("&aIsland Border unloaded successfully!");
-        print("&f&m--------------------------");
-    }
-
-    public static ColorGUI getColorGUI() {
-        return colorGUI;
-    }
-
-    public static Border getBorder() {
-        return border;
+        BambooUtils.consolePrint("&f&m--------------------------");
+        BambooUtils.consolePrint("   &fIsland Border " + getDescription().getVersion());
+        BambooUtils.consolePrint(" ");
+        BambooUtils.consolePrint("&cDisabling...");
+        BambooUtils.consolePrint(" ");
+        BambooUtils.consolePrint("&lDisabling Database...");
+        com.github.zandy.bamboolib.database.Database.getInstance().close();
+        BambooUtils.consolePrint(" ");
+        BambooUtils.consolePrint("&aIsland Border unloaded successfully!");
+        BambooUtils.consolePrint("&f&m--------------------------");
     }
 
     public static BorderSupport getBorderSupport() {

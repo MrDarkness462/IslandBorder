@@ -1,27 +1,27 @@
 package com.github.zandy.islandborder.features.guis;
 
+import com.github.zandy.bamboolib.gui.ClickAction;
+import com.github.zandy.bamboolib.gui.GUI;
+import com.github.zandy.bamboolib.gui.GUIItem;
+import com.github.zandy.bamboolib.item.ItemBuilder;
+import com.github.zandy.bamboolib.utils.BambooFile;
+import com.github.zandy.bamboolib.utils.BambooUtils;
+import com.github.zandy.bamboolib.versionsupport.material.Materials;
+import com.github.zandy.islandborder.files.guis.ColorGUIFile;
 import com.github.zandy.islandborder.player.PlayerData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
-import org.magenpurp.api.gui.ClickAction;
-import org.magenpurp.api.gui.GUI;
-import org.magenpurp.api.gui.GuiItem;
-import org.magenpurp.api.item.ItemBuilder;
-import org.magenpurp.api.utils.FileManager;
-import org.magenpurp.api.versionsupport.materials.Materials;
 
 import java.util.*;
 
+import static com.github.zandy.bamboolib.versionsupport.utils.BorderColor.*;
 import static com.github.zandy.islandborder.files.guis.ColorGUIFile.ColorGUIEnum.INVENTORY_TYPE;
-import static com.github.zandy.islandborder.files.guis.ColorGUIFile.getColorGUIFile;
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.COLOR_GUI_TITLE;
 import static com.github.zandy.islandborder.files.languages.Languages.getLocaleFiles;
 import static com.github.zandy.islandborder.files.languages.Languages.getPlayerLocale;
-import static org.magenpurp.api.MagenAPI.getVersionSupport;
-import static org.magenpurp.api.MagenAPI.print;
-import static org.magenpurp.api.versionsupport.BorderColor.*;
 
 public class ColorGUI {
+    private static ColorGUI instance = null;
     private final InventoryType inventoryType = INVENTORY_TYPE.getInventoryType();
     private final HashMap<String, Materials> materialsMap = new HashMap<>();
     private final HashMap<String, Integer> slotsMap = new HashMap<>();
@@ -29,17 +29,17 @@ public class ColorGUI {
     private final List<String> itemsPath = new ArrayList<>();
 
     public ColorGUI() {
-        for (String s : getColorGUIFile().getConfigurationSection("Slots").getKeys(false)) {
+        for (String s : ColorGUIFile.getInstance().getConfigurationSection("Slots").getKeys(false)) {
             String formatted = "Slots." + s.split("\\.")[0];
             if (!itemsPath.contains(formatted)) {
                 itemsPath.add(formatted);
-                slotsMap.put(formatted, getColorGUIFile().getInt(formatSlot(formatted)) - 1);
-                materialsMap.put(formatted, getColorGUIFile().getMaterial(formatMaterial(formatted)));
+                slotsMap.put(formatted, ColorGUIFile.getInstance().getInt(formatSlot(formatted)) - 1);
+                materialsMap.put(formatted, ColorGUIFile.getInstance().getMaterial(formatMaterial(formatted)));
                 pathMap.put(formatted, "Slots.Color." + s.split("\\.")[0]);
             }
         }
-        for (Map.Entry<String, FileManager> map : getLocaleFiles().entrySet()) {
-            FileManager iso = map.getValue();
+        for (Map.Entry<String, BambooFile> map : getLocaleFiles().entrySet()) {
+            BambooFile iso = map.getValue();
             if (map.getKey().equals("RO")) {
                 iso.addDefault("Slots.Color.Red-Button.Name", "Selecteaza &cRosu");
                 if (!iso.contains("Slots.Color.Blue-Button.Name")) iso.addDefault("Slots.Color.Empty-1.Name", " ");
@@ -71,11 +71,11 @@ public class ColorGUI {
                     subPath = ".Lore";
                 }
                 if (thorwError) {
-                    print("&c----------------------------------------------------");
-                    print("&cISSUE FOUND IN ISLAND BORDER CONFIGURATION!!!");
-                    print("The path '&c" + formatPath(s) + subPath + "&f' is missing from '&c" + map.getValue().getName() + "&f' Language.");
-                    print("&cCorrect this issue or you will not receive support from the developer.");
-                    print("&c----------------------------------------------------");
+                    BambooUtils.consolePrint("&c----------------------------------------------------");
+                    BambooUtils.consolePrint("&cISSUE FOUND IN ISLAND BORDER CONFIGURATION!!!");
+                    BambooUtils.consolePrint("The path '&c" + formatPath(s) + subPath + "&f' is missing from '&c" + map.getValue().getName() + "&f' Language.");
+                    BambooUtils.consolePrint("&cCorrect this issue or you will not receive support from the developer.");
+                    BambooUtils.consolePrint("&c----------------------------------------------------");
                 }
             }
         }
@@ -85,15 +85,15 @@ public class ColorGUI {
         UUID uuid = p.getUniqueId();
         PlayerData playerData = PlayerData.get(uuid);
         if (playerData.getBorderColor() == null) return;
-        FileManager iso = getLocaleFiles().get(getPlayerLocale().get(uuid));
+        BambooFile iso = getLocaleFiles().get(getPlayerLocale().get(uuid));
         GUI gui = new GUI(p, inventoryType, COLOR_GUI_TITLE.getString(uuid));
-        String color = iso.getString("Color." + getVersionSupport().makeFirstLetterUppercase(playerData.getBorderColor().name().toLowerCase()));
+        String color = iso.getString("Color." + BambooUtils.capitalizeFirstLetter(playerData.getBorderColor().name().toLowerCase()));
         for (String s : itemsPath) {
             ItemBuilder item = materialsMap.get(s).getItem().setDisplayName(iso.getString(pathMap.get(s) + ".Name").replace("[color]", color));
             if (iso.getStringList(s + ".Lore").size() > 0) item.setLore(iso.getStringList(pathMap.get(s) + ".Lore"));
-            gui.addItem(new GuiItem(item.build(), slotsMap.get(s)).addClickAction(new ClickAction() {
+            gui.addItem(new GUIItem(item.build(), slotsMap.get(s)).addClickAction(new ClickAction() {
                 @Override
-                public void onClick(GuiItem guiItem, GUI gui) {
+                public void onClick(GUIItem guiItem, GUI gui) {
                     switch (s.split("\\.")[1]) {
                         case "Red-Button": {
                             playerData.setBorderColor(RED);
@@ -115,6 +115,11 @@ public class ColorGUI {
             }));
         }
         gui.open();
+    }
+
+    public static ColorGUI getInstance() {
+        if (instance == null) instance = new ColorGUI();
+        return instance;
     }
 
     private String formatMaterial(String string) {

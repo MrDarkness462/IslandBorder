@@ -1,5 +1,6 @@
 package com.github.zandy.islandborder.features.guis;
 
+import com.github.zandy.bamboolib.gui.ClickAction;
 import com.github.zandy.bamboolib.gui.GUI;
 import com.github.zandy.bamboolib.gui.GUIItem;
 import com.github.zandy.bamboolib.item.ItemBuilder;
@@ -7,22 +8,21 @@ import com.github.zandy.bamboolib.utils.BambooFile;
 import com.github.zandy.bamboolib.utils.BambooUtils;
 import com.github.zandy.bamboolib.versionsupport.material.Materials;
 import com.github.zandy.bamboolib.versionsupport.utils.BorderColor;
+import com.github.zandy.islandborder.features.borders.Border;
 import com.github.zandy.islandborder.files.guis.BorderGUIFile;
 import com.github.zandy.islandborder.player.PlayerData;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryType;
 
 import java.util.*;
 
-import static com.github.zandy.islandborder.Main.getBorder;
-import static com.github.zandy.islandborder.Main.getColorGUI;
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.BORDER_GUI_TITLE;
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.NO_PERMISSION_COMMAND;
 import static com.github.zandy.islandborder.files.languages.Languages.getLocaleFiles;
 import static com.github.zandy.islandborder.files.languages.Languages.getPlayerLocale;
 
 public class BorderGUI {
+    private static BorderGUI instance = null;
     private final InventoryType inventoryType = BorderGUIFile.BorderGUIEnum.INVENTORY_TYPE.getInventoryType();
     private final HashMap<String, Materials> materialsMap = new HashMap<>();
     private final HashMap<String, Integer> slotsMap = new HashMap<>();
@@ -35,16 +35,16 @@ public class BorderGUI {
             String formatted = "Slots." + s.split("\\.")[0];
             if (!itemsPath.contains(formatted)) {
                 itemsPath.add(formatted);
-                slotsMap.put(formatted, getBorderGUIFile().getInt(formatSlot(formatted)) - 1);
+                slotsMap.put(formatted, BorderGUIFile.getInstance().getInt(formatSlot(formatted)) - 1);
                 pathMap.put(formatted, "Slots.Border." + s.split("\\.")[0]);
-                if (!s.contains("Color-Button")) materialsMap.put(formatted, getBorderGUIFile().getMaterial(formatMaterial(formatted)));
+                if (!s.contains("Color-Button")) materialsMap.put(formatted, BorderGUIFile.getInstance().getMaterial(formatMaterial(formatted)));
             }
-            borderColorMaterialsMap.put(RED, SLOTS_COLOR_BUTTON_RED_MATERIAL.getMaterial());
-            borderColorMaterialsMap.put(GREEN, SLOTS_COLOR_BUTTON_GREEN_MATERIAL.getMaterial());
-            borderColorMaterialsMap.put(BLUE, SLOTS_COLOR_BUTTON_BLUE_MATERIAL.getMaterial());
+            borderColorMaterialsMap.put(BorderColor.RED, BorderGUIFile.BorderGUIEnum.SLOTS_COLOR_BUTTON_RED_MATERIAL.getMaterial());
+            borderColorMaterialsMap.put(BorderColor.GREEN, BorderGUIFile.BorderGUIEnum.SLOTS_COLOR_BUTTON_GREEN_MATERIAL.getMaterial());
+            borderColorMaterialsMap.put(BorderColor.BLUE, BorderGUIFile.BorderGUIEnum.SLOTS_COLOR_BUTTON_BLUE_MATERIAL.getMaterial());
         }
-        for (Map.Entry<String, FileManager> map : getLocaleFiles().entrySet()) {
-            FileManager iso = map.getValue();
+        for (Map.Entry<String, BambooFile> map : getLocaleFiles().entrySet()) {
+            BambooFile iso = map.getValue();
             if (map.getKey().equals("RO")) {
                 iso.addDefault("Slots.Border.Enable-Button.Name", "&aPorneste Border-ul");
                 if (!iso.contains("Slots.Border.Color-Button.Name")) iso.addDefault("Slots.Border.Empty-1.Name", " ");
@@ -76,11 +76,11 @@ public class BorderGUI {
                     subPath = ".Lore";
                 }
                 if (throwError) {
-                    print("&c----------------------------------------------------");
-                    print("&cISSUE FOUND IN ISLAND BORDER CONFIGURATION!!!");
-                    print("The path '&c" + formatPath(s) + subPath + "&f' is missing from '&c" + map.getValue().getName() + "&f' Language.");
-                    print("&cCorrect this issue or you will not receive support from the developer.");
-                    print("&c----------------------------------------------------");
+                   BambooUtils.consolePrint("&c----------------------------------------------------");
+                    BambooUtils.consolePrint("&cISSUE FOUND IN ISLAND BORDER CONFIGURATION!!!");
+                    BambooUtils.consolePrint("The path '&c" + formatPath(s) + subPath + "&f' is missing from '&c" + map.getValue().getName() + "&f' Language.");
+                    BambooUtils.consolePrint("&cCorrect this issue or you will not receive support from the developer.");
+                    BambooUtils.consolePrint("&c----------------------------------------------------");
                 }
             }
         }
@@ -98,23 +98,22 @@ public class BorderGUI {
             if (s.contains("Color-Button")) finalMaterial = borderColorMaterialsMap.get(playerData.getBorderColor());
             ItemBuilder item = finalMaterial.getItem().setDisplayName(iso.getString(pathMap.get(s) + ".Name").replace("[color]", color));
             if (iso.getStringList(s + ".Lore").size() > 0) item.setLore(iso.getStringList(pathMap.get(s) + ".Lore"));
-            gui.addItem(new GUIItem(item.build(), slotsMap.get(s)).addClickAction(new GUI.ClickAc));
-            gui.addItem(new GUIItem(item.build(), slotsMap.get(s)).addClickAction(new GUI.ClickAction() {
+            gui.addItem(new GUIItem(item.build(), slotsMap.get(s)).addClickAction(new ClickAction() {
                 @Override
                 public void onClick(GUIItem guiItem, GUI gui) {
                     switch (s.split("\\.")[1]) {
                         case "Enable-Button": {
-                            getBorder().setState(uuid, true);
+                            Border.getInstance().setState(uuid, true);
                             p.closeInventory();
                             break;
                         }
                         case "Disable-Button": {
-                            getBorder().setState(uuid, false);
+                            Border.getInstance().setState(uuid, false);
                             p.closeInventory();
                             break;
                         }
                         case "Color-Button": {
-                            if (p.hasPermission("isborder.color.gui") || p.hasPermission("isborder.*")) getColorGUI().open(p);
+                            if (p.hasPermission("isborder.color.gui") || p.hasPermission("isborder.*")) ColorGUI.getInstance().open(p);
                             else p.sendMessage(NO_PERMISSION_COMMAND.getString(uuid));
                             break;
                         }
@@ -123,6 +122,11 @@ public class BorderGUI {
             }));
         }
         gui.open();
+    }
+
+    public static BorderGUI getInstance() {
+        if (instance == null) instance = new BorderGUI();
+        return instance;
     }
 
     private String formatMaterial(String string) {

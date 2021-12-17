@@ -1,14 +1,14 @@
 package com.github.zandy.islandborder.files.guis;
 
+import com.github.zandy.bamboolib.utils.BambooFile;
+import com.github.zandy.bamboolib.versionsupport.material.Materials;
 import org.bukkit.event.inventory.InventoryType;
-import org.magenpurp.api.utils.FileManager;
-import org.magenpurp.api.versionsupport.materials.Materials;
 
+import static com.github.zandy.bamboolib.versionsupport.material.Materials.*;
 import static com.github.zandy.islandborder.files.guis.ColorGUIFile.ColorGUIEnum.*;
 import static org.bukkit.event.inventory.InventoryType.HOPPER;
-import static org.magenpurp.api.versionsupport.materials.Materials.*;
 
-public class ColorGUIFile extends FileManager {
+public class ColorGUIFile extends BambooFile {
     public enum ColorGUIEnum {
         INVENTORY_TYPE("Inventory.Type", HOPPER.name()),
         SLOTS_RED_BUTTON_SLOT("Slots.Red-Button.Slot", 1),
@@ -20,8 +20,7 @@ public class ColorGUIFile extends FileManager {
         SLOTS_EMPTY_2_SLOT("Slots.Empty-2.Slot", 4),
         SLOTS_EMPTY_2_MATERIAL("Slots.Empty-2.Material", WHITE_STAINED_GLASS_PANE.name()),
         SLOTS_BLUE_BUTTON_SLOT("Slots.Blue-Button.Slot", 5),
-        SLOTS_BLUE_BUTTON_MATERIAL("Slots.Blue-Button.Material", LIGHT_BLUE_DYE.name())
-        ;
+        SLOTS_BLUE_BUTTON_MATERIAL("Slots.Blue-Button.Material", LIGHT_BLUE_DYE.name());
 
         final String path;
         final Object defaultValue;
@@ -40,14 +39,14 @@ public class ColorGUIFile extends FileManager {
         }
 
         public InventoryType getInventoryType() {
-            return InventoryType.valueOf(getColorGUIFile().getString(getPath()));
+            return InventoryType.valueOf(ColorGUIFile.getInstance().getString(getPath()));
         }
 
         public Materials getMaterial() {
-            return Materials.valueOf(getColorGUIFile().getString(getPath()));
+            return Materials.valueOf(ColorGUIFile.getInstance().getString(getPath()));
         }
     }
-    private static FileManager colorGUIFile;
+    private static ColorGUIFile instance;
 
     public ColorGUIFile() {
         super("Color", "GUIs");
@@ -68,10 +67,10 @@ public class ColorGUIFile extends FileManager {
         addDefault(SLOTS_BLUE_BUTTON_MATERIAL.getPath(), SLOTS_BLUE_BUTTON_MATERIAL.getDefaultValue());
         copyDefaults();
         save();
-        colorGUIFile = this;
     }
 
-    public static FileManager getColorGUIFile() {
-        return colorGUIFile;
+    public static ColorGUIFile getInstance() {
+        if (instance == null) instance = new ColorGUIFile();
+        return instance;
     }
 }

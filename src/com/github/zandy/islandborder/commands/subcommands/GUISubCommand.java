@@ -1,17 +1,18 @@
 package com.github.zandy.islandborder.commands.subcommands;
 
+import com.github.zandy.bamboolib.command.SubCommand;
+import com.github.zandy.islandborder.features.guis.BorderGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.magenpurp.api.command.SubCommand;
 
-import static com.github.zandy.islandborder.Main.getBorderGUI;
 import static com.github.zandy.islandborder.Main.getBorderSupport;
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.COMMAND_AVAILABLE_ON_ISLAND;
+import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.INFO_SUBCOMMAND_GUI;
 
 public class GUISubCommand extends SubCommand {
 
     public GUISubCommand() {
-        super("gui", new String[]{"isborder.gui", "isborder.*"});
+        super("gui", INFO_SUBCOMMAND_GUI.getString(), new String[]{"isborder.gui", "isborder.*"});
     }
 
     @Override
@@ -22,7 +23,7 @@ public class GUISubCommand extends SubCommand {
             p.sendMessage(COMMAND_AVAILABLE_ON_ISLAND.getString(p.getUniqueId()));
             return;
         }
-        getBorderGUI().open(p);
+        BorderGUI.getInstance().open(p);
     }
 
     @Override

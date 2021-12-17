@@ -1,11 +1,12 @@
 package com.github.zandy.islandborder.commands.subcommands;
 
+import com.github.zandy.bamboolib.command.SubCommand;
+import com.github.zandy.bamboolib.utils.BambooUtils;
+import com.github.zandy.bamboolib.versionsupport.utils.BorderColor;
+import com.github.zandy.islandborder.features.borders.Border;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.magenpurp.api.command.SubCommand;
-import org.magenpurp.api.versionsupport.BorderColor;
 
-import static com.github.zandy.islandborder.Main.getBorder;
 import static com.github.zandy.islandborder.Main.getBorderSupport;
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.*;
 import static com.github.zandy.islandborder.files.languages.Languages.getLocaleFiles;
@@ -13,12 +14,11 @@ import static com.github.zandy.islandborder.files.languages.Languages.getPlayerL
 import static java.util.Arrays.asList;
 import static net.md_5.bungee.api.chat.ClickEvent.Action.RUN_COMMAND;
 import static net.md_5.bungee.api.chat.ClickEvent.Action.SUGGEST_COMMAND;
-import static org.magenpurp.api.utils.TextComponentUtil.sendTextComponent;
 
 public class ColorSubCommand extends SubCommand {
 
     public ColorSubCommand() {
-        super("color", new String[]{"isborder.color", "isborder.*", "isborder.color.red", "isborder.color.green", "isborder.color.blue"});
+        super("color", INFO_SUBCOMMAND_COLOR.getString(), new String[]{"isborder.color", "isborder.*", "isborder.color.red", "isborder.color.green", "isborder.color.blue"});
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ColorSubCommand extends SubCommand {
             p.sendMessage(NO_PERMISSION_COLOR.getString(p.getUniqueId()));
             return;
         }
-        getBorder().setColorState(p.getUniqueId(), BorderColor.valueOf(color));
+        Border.getInstance().setColorState(p.getUniqueId(), BorderColor.valueOf(color));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ColorSubCommand extends SubCommand {
         p.sendMessage(" ");
         p.sendMessage(" ");
         p.sendMessage(COMMAND_USAGE_WRONG.getString(p.getUniqueId()));
-        sendTextComponent(p, COMMAND_USAGE_EXAMPLE.getString(p.getUniqueId()).replace("[command]", COMMAND_USAGE_COLOR.getString(p.getUniqueId())), "/isborder color ", COMMAND_CLICK_TO_SUGGEST.getString(p.getUniqueId()), SUGGEST_COMMAND);
-        for (String s : asList("Red", "Green", "Blue")) sendTextComponent(p, COMMAND_USAGE_CLICK.getString(p.getUniqueId()).replace("[name]", getLocaleFiles().get(getPlayerLocale().get(p.getUniqueId())).getString("Color." + s)), "/isborder color " + s, COMMAND_CLICK_TO_RUN.getString(p.getUniqueId()), RUN_COMMAND);
+        BambooUtils.sendTextComponent(p, COMMAND_USAGE_EXAMPLE.getString(p.getUniqueId()).replace("[command]", COMMAND_USAGE_COLOR.getString(p.getUniqueId())), "/isborder color ", COMMAND_CLICK_TO_SUGGEST.getString(p.getUniqueId()), SUGGEST_COMMAND);
+        for (String s : asList("Red", "Green", "Blue")) BambooUtils.sendTextComponent(p, COMMAND_USAGE_CLICK.getString(p.getUniqueId()).replace("[name]", getLocaleFiles().get(getPlayerLocale().get(p.getUniqueId())).getString("Color." + s)), "/isborder color " + s, COMMAND_CLICK_TO_RUN.getString(p.getUniqueId()), RUN_COMMAND);
     }
 }

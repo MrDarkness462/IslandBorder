@@ -1,15 +1,15 @@
 package com.github.zandy.islandborder.commands;
 
+import com.github.zandy.bamboolib.BambooLib;
+import com.github.zandy.bamboolib.command.ParentCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.magenpurp.api.command.ParentCommand;
 
 import static com.github.zandy.islandborder.files.Settings.SettingsEnum.COMMAND_ALIASES;
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.CONSOLE_NOT_AVAILABLE;
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.NO_PERMISSION_COMMAND;
 import static org.bukkit.ChatColor.translateAlternateColorCodes;
-import static org.magenpurp.api.MagenAPI.getPlugin;
 
 public class IslandBorderCommand extends ParentCommand {
     private final PluginDescriptionFile pluginDescriptionFile;
@@ -18,7 +18,7 @@ public class IslandBorderCommand extends ParentCommand {
         super("isborder");
         setAliases(COMMAND_ALIASES.getStringList());
         setDescription("Main command for IslandBorder plugin.");
-        pluginDescriptionFile = getPlugin().getDescription();
+        pluginDescriptionFile = BambooLib.getPluginInstance().getDescription();
     }
 
     @Override
