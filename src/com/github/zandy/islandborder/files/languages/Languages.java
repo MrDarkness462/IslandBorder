@@ -1,8 +1,8 @@
 package com.github.zandy.islandborder.files.languages;
 
+import com.github.zandy.bamboolib.utils.BambooFile;
 import com.github.zandy.islandborder.files.languages.iso.EN;
 import com.github.zandy.islandborder.files.languages.iso.RO;
-import org.magenpurp.api.utils.FileManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -89,7 +89,7 @@ public class Languages {
         }
     }
     private static HashMap<UUID, String> playerLocaleMap = new HashMap<>();
-    private static HashMap<String, FileManager> localeFileMap = new HashMap<>();
+    private static HashMap<String, BambooFile> localeFileMap = new HashMap<>();
     private final static List<String> languageAbbreviations = new ArrayList<>();
     private final List<String> isoList = new ArrayList<>();
 
@@ -106,7 +106,7 @@ public class Languages {
             }
         }
         for (String iso : localeList) {
-            FileManager locale = new FileManager("Language_" + iso, "Languages");
+            BambooFile locale = new BambooFile("Language_" + iso, "Languages");
             for (LanguageEnum langEnum : LanguageEnum.values()) if (!langEnum.ignoreInLanguage() && !iso.contains("EN")) locale.addDefault(langEnum.getPath(), langEnum.getDefaultValue());
             locale.copyDefaults();
             locale.save();
@@ -116,7 +116,7 @@ public class Languages {
         }
     }
 
-    public static HashMap<String, FileManager> getLocaleFiles() {
+    public static HashMap<String, BambooFile> getLocaleFiles() {
         return localeFileMap;
     }
 

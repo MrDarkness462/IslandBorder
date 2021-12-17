@@ -1,14 +1,14 @@
 package com.github.zandy.islandborder.files.guis;
 
+import com.github.zandy.bamboolib.utils.BambooFile;
+import com.github.zandy.bamboolib.versionsupport.material.Materials;
 import org.bukkit.event.inventory.InventoryType;
-import org.magenpurp.api.utils.FileManager;
-import org.magenpurp.api.versionsupport.materials.Materials;
 
+import static com.github.zandy.bamboolib.versionsupport.material.Materials.*;
 import static com.github.zandy.islandborder.files.guis.BorderGUIFile.BorderGUIEnum.*;
 import static org.bukkit.event.inventory.InventoryType.HOPPER;
-import static org.magenpurp.api.versionsupport.materials.Materials.*;
 
-public class BorderGUIFile extends FileManager {
+public class BorderGUIFile extends BambooFile {
     public enum BorderGUIEnum {
         INVENTORY_TYPE("Inventory.Type", HOPPER.name()),
         SLOTS_ENABLE_BUTTON_SLOT("Slots.Enable-Button.Slot", 1),
@@ -37,14 +37,15 @@ public class BorderGUIFile extends FileManager {
         }
 
         public InventoryType getInventoryType() {
-            return InventoryType.valueOf(getBorderGUIFile().getString(getPath()));
+            return InventoryType.valueOf(BorderGUIFile.getInstance().getString(getPath()));
         }
 
         public Materials getMaterial() {
-            return Materials.valueOf(getBorderGUIFile().getString(getPath()));
+            return Materials.valueOf(BorderGUIFile.getInstance().get().getString(getPath()));
         }
     }
-    private static FileManager borderGuiFile;
+    private static BorderGUIFile instance = null;
+    private final BambooFile borderGuiFile;
 
     public BorderGUIFile() {
         super("Border", "GUIs");
@@ -70,7 +71,12 @@ public class BorderGUIFile extends FileManager {
         borderGuiFile = this;
     }
 
-    public static FileManager getBorderGUIFile() {
+    public BambooFile get() {
         return borderGuiFile;
+    }
+
+    public static BorderGUIFile getInstance() {
+        if (instance == null) instance = new BorderGUIFile();
+        return instance;
     }
 }

@@ -1,33 +1,29 @@
 package com.github.zandy.islandborder.features.guis;
 
-import com.github.zandy.islandborder.files.languages.Languages;
+import com.github.zandy.bamboolib.gui.GUI;
+import com.github.zandy.bamboolib.gui.GUIItem;
+import com.github.zandy.bamboolib.item.ItemBuilder;
+import com.github.zandy.bamboolib.utils.BambooFile;
+import com.github.zandy.bamboolib.utils.BambooUtils;
+import com.github.zandy.bamboolib.versionsupport.material.Materials;
+import com.github.zandy.bamboolib.versionsupport.utils.BorderColor;
+import com.github.zandy.islandborder.files.guis.BorderGUIFile;
 import com.github.zandy.islandborder.player.PlayerData;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryType;
-import org.magenpurp.api.gui.ClickAction;
-import org.magenpurp.api.gui.GUI;
-import org.magenpurp.api.gui.GuiItem;
-import org.magenpurp.api.item.ItemBuilder;
-import org.magenpurp.api.utils.FileManager;
-import org.magenpurp.api.versionsupport.BorderColor;
-import org.magenpurp.api.versionsupport.materials.Materials;
 
 import java.util.*;
 
 import static com.github.zandy.islandborder.Main.getBorder;
 import static com.github.zandy.islandborder.Main.getColorGUI;
-import static com.github.zandy.islandborder.files.guis.BorderGUIFile.BorderGUIEnum.*;
-import static com.github.zandy.islandborder.files.guis.BorderGUIFile.getBorderGUIFile;
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.BORDER_GUI_TITLE;
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.NO_PERMISSION_COMMAND;
 import static com.github.zandy.islandborder.files.languages.Languages.getLocaleFiles;
 import static com.github.zandy.islandborder.files.languages.Languages.getPlayerLocale;
-import static org.magenpurp.api.MagenAPI.getVersionSupport;
-import static org.magenpurp.api.MagenAPI.print;
-import static org.magenpurp.api.versionsupport.BorderColor.*;
 
 public class BorderGUI {
-    private final InventoryType inventoryType = INVENTORY_TYPE.getInventoryType();
+    private final InventoryType inventoryType = BorderGUIFile.BorderGUIEnum.INVENTORY_TYPE.getInventoryType();
     private final HashMap<String, Materials> materialsMap = new HashMap<>();
     private final HashMap<String, Integer> slotsMap = new HashMap<>();
     private final HashMap<String, String> pathMap = new HashMap<>();
@@ -35,7 +31,7 @@ public class BorderGUI {
     private final List<String> itemsPath = new ArrayList<>();
 
     public BorderGUI() {
-        for (String s : getBorderGUIFile().getConfigurationSection("Slots").getKeys(false)) {
+        for (String s : BorderGUIFile.getInstance().getConfigurationSection("Slots").getKeys(false)) {
             String formatted = "Slots." + s.split("\\.")[0];
             if (!itemsPath.contains(formatted)) {
                 itemsPath.add(formatted);
@@ -94,17 +90,18 @@ public class BorderGUI {
         UUID uuid = p.getUniqueId();
         PlayerData playerData = PlayerData.get(uuid);
         if (playerData.getBorderColor() == null) return;
-        FileManager iso = getLocaleFiles().get(getPlayerLocale().get(uuid));
+        BambooFile iso = getLocaleFiles().get(getPlayerLocale().get(uuid));
         GUI gui = new GUI(p, inventoryType, BORDER_GUI_TITLE.getString(uuid));
-        String color = iso.getString("Color." + getVersionSupport().makeFirstLetterUppercase(playerData.getBorderColor().name().toLowerCase()));
+        String color = iso.getString("Color." + BambooUtils.capitalizeFirstLetter(playerData.getBorderColor().name().toLowerCase()));
         for (String s : itemsPath) {
             Materials finalMaterial = materialsMap.get(s);
             if (s.contains("Color-Button")) finalMaterial = borderColorMaterialsMap.get(playerData.getBorderColor());
             ItemBuilder item = finalMaterial.getItem().setDisplayName(iso.getString(pathMap.get(s) + ".Name").replace("[color]", color));
             if (iso.getStringList(s + ".Lore").size() > 0) item.setLore(iso.getStringList(pathMap.get(s) + ".Lore"));
-            gui.addItem(new GuiItem(item.build(), slotsMap.get(s)).addClickAction(new ClickAction() {
+            gui.addItem(new GUIItem(item.build(), slotsMap.get(s)).addClickAction(new GUI.ClickAc));
+            gui.addItem(new GUIItem(item.build(), slotsMap.get(s)).addClickAction(new GUI.ClickAction() {
                 @Override
-                public void onClick(GuiItem guiItem, GUI gui) {
+                public void onClick(GUIItem guiItem, GUI gui) {
                     switch (s.split("\\.")[1]) {
                         case "Enable-Button": {
                             getBorder().setState(uuid, true);

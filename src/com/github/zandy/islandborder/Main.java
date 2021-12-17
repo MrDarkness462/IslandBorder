@@ -91,7 +91,6 @@ public class Main extends JavaPlugin {
         if (SUBCOMMAND_ENABLED_GUI.getBoolean()) {
             print(" ");
             print("Loading GUIs...");
-            new BorderGUIFile();
             borderGUI = new BorderGUI();
             new ColorGUIFile();
             colorGUI = new ColorGUI();
@@ -137,10 +136,6 @@ public class Main extends JavaPlugin {
         print(" ");
         print("&aIsland Border unloaded successfully!");
         print("&f&m--------------------------");
-    }
-
-    public static BorderGUI getBorderGUI() {
-        return borderGUI;
     }
 
     public static ColorGUI getColorGUI() {
