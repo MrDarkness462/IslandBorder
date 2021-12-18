@@ -8,7 +8,6 @@ import com.github.zandy.islandborder.commands.IslandBorderCommand;
 import com.github.zandy.islandborder.commands.subcommands.*;
 import com.github.zandy.islandborder.features.Placeholders;
 import com.github.zandy.islandborder.files.Settings;
-import com.github.zandy.islandborder.listeners.PluginEvents;
 import com.github.zandy.islandborder.player.PlayerEngine;
 import com.github.zandy.islandborder.storage.Database;
 import com.github.zandy.islandborder.support.*;
