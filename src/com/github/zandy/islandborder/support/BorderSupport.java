@@ -9,29 +9,31 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import static com.github.zandy.bamboolib.utils.BambooUtils.consolePrint;
+
 public abstract class BorderSupport {
     private static BorderSupport instance;
 
     public static boolean init() {
         if (BambooUtils.isPluginEnabled("ASkyBlock")) {
             instance = new ASkyBlock();
-            BambooUtils.consolePrint("&eASkyBlock &fplugin found!");
+            consolePrint("&eASkyBlock &fplugin found!");
         } else if (BambooUtils.isPluginEnabled("AcidIsland")) {
             instance = new AcidIsland();
-            BambooUtils.consolePrint("&eAcidIsland &fplugin found!");
+            consolePrint("&eAcidIsland &fplugin found!");
         } else if (BambooUtils.isPluginEnabled("BentoBox")) {
             instance = new BentoBox();
-            BambooUtils.consolePrint("&eBentoBox &fplugin found!");
+            consolePrint("&eBentoBox &fplugin found!");
         } else if (BambooUtils.isPluginEnabled("uSkyBlock")) {
             instance = new USkyBlock();
-            BambooUtils.consolePrint("&euSkyBlock &fplugin found!");
+            consolePrint("&euSkyBlock &fplugin found!");
         } else if (BambooUtils.isPluginEnabled("IslandWorld")) {
             instance = new IslandWorld();
-            BambooUtils.consolePrint("&eIslandWorld &fplugin found!");
+            consolePrint("&eIslandWorld &fplugin found!");
         } else {
-            BambooUtils.consolePrint("&cNO SKYBLOCK PLUGIN FOUND! DISABLING...");
-            BambooUtils.consolePrint(" ");
-            BambooUtils.consolePrint("&f&m--------------------------");
+            consolePrint("&cNO SKYBLOCK PLUGIN FOUND! DISABLING...");
+            consolePrint(" ");
+            consolePrint("&f&m--------------------------");
             return false;
         }
         return true;
@@ -48,13 +50,13 @@ public abstract class BorderSupport {
                     }
                 }
             }
-        }.runTaskTimerAsynchronously(BambooLib.getPluginInstance(), 60, 60);
+        }.runTaskTimer(BambooLib.getPluginInstance(), 60, 60);
     }
 
     public abstract void send(Player p);
 
     public void remove(Player p) {
-        if (PlayerData.isCached(p.getUniqueId())) VersionSupport.getInstance().sendBorder(p, BorderColor.BLUE, 0, 0, Integer.MAX_VALUE);
+        if (PlayerData.isCached(p.getUniqueId())) VersionSupport.getInstance().sendBorder(p, BorderColor.BLUE, Integer.MAX_VALUE, 0, 0);
     }
 
     public abstract String size(Player p);

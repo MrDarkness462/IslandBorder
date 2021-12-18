@@ -32,7 +32,7 @@ public class ASkyBlock extends BorderSupport implements Listener {
         Location center = island.getCenter();
         if (center == null) return;
         int x = center.getBlockX(), z = center.getBlockZ(), size = island.getProtectionSize();
-        VersionSupport.getInstance().sendBorder(p, PlayerData.get(p.getUniqueId()).getBorderColor(), x, z, size);
+        VersionSupport.getInstance().sendBorder(p, PlayerData.get(p.getUniqueId()).getBorderColor(), size, x, z);
     }
 
     @Override

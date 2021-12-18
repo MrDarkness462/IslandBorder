@@ -26,7 +26,7 @@ public class BentoBox extends BorderSupport implements Listener {
         Island island = bentoBoxAPI.getIslands().getIsland(p.getWorld(), p.getUniqueId());
         if (island == null || !island.onIsland(p.getLocation()) || island.getCenter() == null) return;
         int x = island.getCenter().getBlockX(), z = island.getCenter().getBlockZ(), size = island.getProtectionRange() * 2;
-        VersionSupport.getInstance().sendBorder(p, PlayerData.get(p.getUniqueId()).getBorderColor(), x, z, size);
+        VersionSupport.getInstance().sendBorder(p, PlayerData.get(p.getUniqueId()).getBorderColor(), size, x, z);
     }
 
     @Override

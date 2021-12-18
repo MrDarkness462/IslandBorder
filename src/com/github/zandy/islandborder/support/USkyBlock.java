@@ -25,7 +25,7 @@ public class USkyBlock extends BorderSupport {
         if (uSkyBlockAPI == null || !uSkyBlockAPI.getPlayerInfo(p).getHasIsland() || !uSkyBlockAPI.getIslandInfo(p).contains(p.getLocation())) return;
         Location islandLocation = uSkyBlockAPI.getIslandInfo(p).getIslandLocation();
         int x = islandLocation.getBlockX(), z = islandLocation.getBlockZ();
-        VersionSupport.getInstance().sendBorder(p, PlayerData.get(p.getUniqueId()).getBorderColor(), x, z, protectionRange - 2);
+        VersionSupport.getInstance().sendBorder(p, PlayerData.get(p.getUniqueId()).getBorderColor(), protectionRange - 2, x, z);
     }
 
     @Override

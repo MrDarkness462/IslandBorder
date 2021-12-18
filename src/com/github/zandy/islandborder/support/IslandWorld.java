@@ -31,7 +31,7 @@ public class IslandWorld extends BorderSupport implements Listener {
         if (island == null || !islandWorldAPI.isInsideIsland(p, island) || island.getLocation() != null) return;
         int[] coordinates = IslandWorldApi.getIslandXZCoords(p.getName(), true);
         int x = coordinates[0] + isleSize / 2, z = coordinates[1] + isleSize / 2;
-        VersionSupport.getInstance().sendBorder(p, PlayerData.get(p.getUniqueId()).getBorderColor(), x, z, isleRadius * island.getRegionSpacing());
+        VersionSupport.getInstance().sendBorder(p, PlayerData.get(p.getUniqueId()).getBorderColor(), isleRadius * island.getRegionSpacing(), x, z);
     }
 
     @Override
