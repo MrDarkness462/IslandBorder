@@ -8,12 +8,13 @@ import com.github.zandy.islandborder.commands.IslandBorderCommand;
 import com.github.zandy.islandborder.commands.subcommands.*;
 import com.github.zandy.islandborder.features.Placeholders;
 import com.github.zandy.islandborder.files.Settings;
-import com.github.zandy.islandborder.files.Settings.SettingsEnum;
 import com.github.zandy.islandborder.listeners.PluginEvents;
 import com.github.zandy.islandborder.player.PlayerEngine;
 import com.github.zandy.islandborder.storage.Database;
 import com.github.zandy.islandborder.support.*;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import static com.github.zandy.islandborder.files.Settings.SettingsEnum.*;
 
 public class Main extends JavaPlugin {
 
@@ -51,16 +52,16 @@ public class Main extends JavaPlugin {
         BambooUtils.consolePrint(" ");
         BambooUtils.consolePrint("Loading Commands...");
         IslandBorderCommand islandBorderCommand = new IslandBorderCommand();
-        if (SettingsEnum.SUBCOMMAND_ENABLED_GUI.getBoolean()) {
+        if (SUBCOMMAND_ENABLED_GUI.getBoolean()) {
             BambooUtils.consolePrint(" ");
             BambooUtils.consolePrint("Loading GUIs...");
             islandBorderCommand.addSubCommand(new GUISubCommand());
         }
-        if (SettingsEnum.SUBCOMMAND_ENABLED_BORDER_ENABLE.getBoolean()) islandBorderCommand.addSubCommand(new EnableSubCommand());
-        if (SettingsEnum.SUBCOMMAND_ENABLED_BORDER_DISABLE.getBoolean()) islandBorderCommand.addSubCommand(new DisableSubCommand());
-        if (SettingsEnum.SUBCOMMAND_ENABLED_BORDER_TOGGLE.getBoolean()) islandBorderCommand.addSubCommand(new ToggleSubCommand());
-        if (SettingsEnum.SUBCOMMAND_ENABLED_BORDER_COLOR.getBoolean()) islandBorderCommand.addSubCommand(new ColorSubCommand());
-        if (SettingsEnum.SUBCOMMAND_ENABLED_BORDER_LANGUAGE.getBoolean()) islandBorderCommand.addSubCommand(new LanguageSubCommand());
+        if (SUBCOMMAND_ENABLED_BORDER_ENABLE.getBoolean()) islandBorderCommand.addSubCommand(new EnableSubCommand());
+        if (SUBCOMMAND_ENABLED_BORDER_DISABLE.getBoolean()) islandBorderCommand.addSubCommand(new DisableSubCommand());
+        if (SUBCOMMAND_ENABLED_BORDER_TOGGLE.getBoolean()) islandBorderCommand.addSubCommand(new ToggleSubCommand());
+        if (SUBCOMMAND_ENABLED_BORDER_COLOR.getBoolean()) islandBorderCommand.addSubCommand(new ColorSubCommand());
+        if (SUBCOMMAND_ENABLED_BORDER_LANGUAGE.getBoolean()) islandBorderCommand.addSubCommand(new LanguageSubCommand());
         VersionSupport.getInstance().registerCommand(islandBorderCommand);
         BambooUtils.consolePrint(" ");
         BambooUtils.consolePrint("Looking for hooks...");
