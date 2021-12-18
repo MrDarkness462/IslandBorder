@@ -16,7 +16,7 @@ import java.util.UUID;
 public class LanguageSubCommand extends SubCommand {
 
     public LanguageSubCommand() {
-        super("language", LanguageEnum.INFO_SUBCOMMAND_LANGUAGE.getString(), new String[]{"isborder.language", "isborder.*"});
+        super("language", LanguageEnum.INFO_SUBCOMMAND_LANGUAGE.getString(), new String[]{"isborder.language", "isborder.player", "isborder.*"});
     }
 
     @Override

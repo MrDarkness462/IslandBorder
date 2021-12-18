@@ -16,7 +16,7 @@ import java.util.Arrays;
 public class ColorSubCommand extends SubCommand {
 
     public ColorSubCommand() {
-        super("color", LanguageEnum.INFO_SUBCOMMAND_COLOR.getString(), new String[]{"isborder.color", "isborder.*", "isborder.color.red", "isborder.color.green", "isborder.color.blue"});
+        super("color", LanguageEnum.INFO_SUBCOMMAND_COLOR.getString(), new String[]{"isborder.color", "isborder.player", "isborder.*", "isborder.color.red", "isborder.color.green", "isborder.color.blue"});
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ColorSubCommand extends SubCommand {
             sendHelp(p);
             return;
         }
-        if (!(p.hasPermission("isborder.color." + color.toLowerCase()) || p.hasPermission("isborder.*"))) {
+        if (!(p.hasPermission("isborder.color." + color.toLowerCase()) || p.hasPermission("isborder.*") || p.hasPermission("isborder.player"))) {
             p.sendMessage(LanguageEnum.NO_PERMISSION_COLOR.getString(p.getUniqueId()));
             return;
         }

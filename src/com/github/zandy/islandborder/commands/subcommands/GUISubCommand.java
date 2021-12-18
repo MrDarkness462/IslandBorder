@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 public class GUISubCommand extends SubCommand {
 
     public GUISubCommand() {
-        super("gui", LanguageEnum.INFO_SUBCOMMAND_GUI.getString(), new String[]{"isborder.gui", "isborder.*"});
+        super("gui", LanguageEnum.INFO_SUBCOMMAND_GUI.getString(), new String[]{"isborder.gui", "isborder.player", "isborder.*"});
     }
 
     @Override

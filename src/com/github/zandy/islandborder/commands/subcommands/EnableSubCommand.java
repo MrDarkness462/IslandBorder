@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 public class EnableSubCommand extends SubCommand {
 
     public EnableSubCommand() {
-        super("enable", LanguageEnum.INFO_SUBCOMMAND_LANGUAGE.getString(), new String[]{"isborder.toggle", "isborder.*"});
+        super("enable", LanguageEnum.INFO_SUBCOMMAND_LANGUAGE.getString(), new String[]{"isborder.toggle", "isborder.player", "isborder.*"});
     }
 
     @Override
