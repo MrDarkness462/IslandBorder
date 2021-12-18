@@ -36,7 +36,7 @@ public class Languages {
         LANGUAGE_CHANGED("Language.Changed", "&7[&aIB&7] &fLanguage changed to &e[languageName] &f[&b[languageAbbreviation]&f]!"),
         BORDER_COOLDOWN("Border.Cooldown", "&7[&aIB&7] &fBorder cooldown expires in &e[seconds] [secondsFormatted]&f."),
         BORDER_TOGGLED_ON("Border.Toggled.On", "&7[&aIB&7] &fThe Border is now shown with the color [color]&f."),
-        BORDER_TOGGLED_OFF("Border.Toggled.On", "&7[&aIB&7] &fThe Border is now hidden."),
+        BORDER_TOGGLED_OFF("Border.Toggled.Off", "&7[&aIB&7] &fThe Border is now hidden."),
         BORDER_ALREADY_TOGGLED_ON("Border.Already-Toggled.On", "&7[&aIB&7] &fThe Border is already toggled on."),
         BORDER_ALREADY_TOGGLED_OFF("Border.Already-Toggled.Off", "&7[&aIB&7] &fThe Border is already toggled off."),
         BORDER_GUI_TITLE("Border.GUI.Title", "&fBorder Settings"),

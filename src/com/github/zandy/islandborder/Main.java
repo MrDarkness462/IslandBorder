@@ -22,22 +22,19 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         BambooLib.setPluginInstance(this);
-        consolePrint("&f&m--------------------------");
-        consolePrint("   &fIsland Border " + getDescription().getVersion());
-        consolePrint(" ");
-        consolePrint("Initializing...");
-        consolePrint(" ");
+        consolePrint("&m--------------------------");
+        consolePrint("Initializing Island Border " + getDescription().getVersion());
         if (!BambooUtils.isVersion(8, 12, 17)) {
+            consolePrint(" ");
             consolePrint("&c&lCan't run on: " + VersionSupport.getInstance().getVersion());
             consolePrint(" ");
             consolePrint("&f&m--------------------------");
             setEnabled(false);
             return;
         }
-        consolePrint("&lRunning on: " + VersionSupport.getInstance().getVersion());
+        consolePrint("Running on: " + VersionSupport.getInstance().getVersion());
         consolePrint(" ");
-        consolePrint("&lFinding SkyBlock plugin...");
-        consolePrint(" ");
+        consolePrint("Finding SkyBlock plugin...");
         setEnabled(BorderSupport.init());
         consolePrint(" ");
         consolePrint("Loading Settings...");
@@ -47,11 +44,6 @@ public class Main extends JavaPlugin {
         new Database();
         consolePrint("Database type: " + BambooUtils.capitalizeFirstLetter(com.github.zandy.bamboolib.database.Database.getInstance().getDatabaseType().name().toLowerCase()).replace("_", " "));
         PlayerEngine.getInstance().init();
-        consolePrint("");
-        consolePrint("Loading Functionality...");
-        new PluginEvents();
-        consolePrint(" ");
-        consolePrint("Loading Commands...");
         IslandBorderCommand islandBorderCommand = new IslandBorderCommand();
         if (SUBCOMMAND_ENABLED_GUI.getBoolean()) {
             consolePrint(" ");
@@ -66,7 +58,6 @@ public class Main extends JavaPlugin {
         VersionSupport.getInstance().registerCommand(islandBorderCommand);
         consolePrint(" ");
         consolePrint("Looking for hooks...");
-        consolePrint(" ");
         boolean enablePlaceholders = false;
         if (BambooUtils.isPluginEnabled("PlaceholderAPI")) {
             consolePrint("PlaceholderAPI hook found!");
@@ -82,21 +73,21 @@ public class Main extends JavaPlugin {
         SpigotUpdater.getInstance().checkForUpdates(56320);
         consolePrint(" ");
         consolePrint("&aIsland Border loaded successfully!");
-        consolePrint("&f&m--------------------------");
+        consolePrint("&m--------------------------");
     }
 
     @Override
     public void onDisable() {
         if (!isEnabled()) return;
-        consolePrint("&f&m--------------------------");
+        consolePrint("&m--------------------------");
         consolePrint("   &fIsland Border " + getDescription().getVersion());
         consolePrint(" ");
         consolePrint("&cDisabling...");
         consolePrint(" ");
-        consolePrint("&lDisabling Database...");
+        consolePrint("Disabling Database...");
         com.github.zandy.bamboolib.database.Database.getInstance().close();
         consolePrint(" ");
         consolePrint("&aIsland Border unloaded successfully!");
-        consolePrint("&f&m--------------------------");
+        consolePrint("&m--------------------------");
     }
 }

@@ -17,19 +17,16 @@ public abstract class BorderSupport {
     public static boolean init() {
         if (BambooUtils.isPluginEnabled("ASkyBlock")) {
             instance = new ASkyBlock();
-            consolePrint("&eASkyBlock &fplugin found!");
+            consolePrint("&aASkyBlock &fplugin found!");
         } else if (BambooUtils.isPluginEnabled("AcidIsland")) {
             instance = new AcidIsland();
-            consolePrint("&eAcidIsland &fplugin found!");
+            consolePrint("&aAcidIsland &fplugin found!");
         } else if (BambooUtils.isPluginEnabled("BentoBox")) {
             instance = new BentoBox();
-            consolePrint("&eBentoBox &fplugin found!");
+            consolePrint("&aBentoBox &fplugin found!");
         } else if (BambooUtils.isPluginEnabled("uSkyBlock")) {
             instance = new USkyBlock();
-            consolePrint("&euSkyBlock &fplugin found!");
-        } else if (BambooUtils.isPluginEnabled("IslandWorld")) {
-            instance = new IslandWorld();
-            consolePrint("&eIslandWorld &fplugin found!");
+            consolePrint("&auSkyBlock &fplugin found!");
         } else {
             consolePrint("&cNO SKYBLOCK PLUGIN FOUND! DISABLING...");
             consolePrint(" ");

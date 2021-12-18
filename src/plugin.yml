@@ -1,11 +1,10 @@
 main: com.github.zandy.islandborder.Main
 name: IslandBorder
 version: Build 7
-api-version: 1.13
+api-version: 1.17
 author: Zandy
 softdepend:
   - ASkyBlock
   - AcidIsland
   - BentoBox
   - uSkyBlock
-  - IslandWorld
