@@ -1,15 +1,14 @@
 package com.github.zandy.islandborder.files;
 
-import org.magenpurp.api.utils.FileManager;
+import com.github.zandy.bamboolib.utils.BambooFile;
+import com.github.zandy.bamboolib.versionsupport.utils.BorderColor;
 
+import java.util.Arrays;
 import java.util.List;
 
-import static java.util.Arrays.asList;
-import static org.magenpurp.api.versionsupport.BorderColor.BLUE;
-
-public class Settings extends FileManager {
+public class Settings extends BambooFile {
     public enum SettingsEnum {
-        COMMAND_ALIASES("Command-Aliases", asList("ib", "islandborder", "aiborder", "bbborder", "bsborder", "usborder", "iwborder")),
+        COMMAND_ALIASES("Command-Aliases", Arrays.asList("ib", "islandborder", "aiborder", "bbborder", "bsborder", "usborder", "iwborder")),
         SUBCOMMAND_ENABLED_GUI("SubCommand-Enabled.GUI", true),
         SUBCOMMAND_ENABLED_BORDER_ENABLE("SubCommand-Enabled.Enable", true),
         SUBCOMMAND_ENABLED_BORDER_DISABLE("SubCommand-Enabled.Disable", true),
@@ -18,7 +17,7 @@ public class Settings extends FileManager {
         SUBCOMMAND_ENABLED_BORDER_LANGUAGE("SubCommand-Enabled.Language", true),
         DEFAULT_LANGUAGE("Default.Language", "EN"),
         DEFAULT_BORDER_STATE("Default.Border-State", true),
-        DEFAULT_BORDER_COLOR("Default.Border-Color", BLUE.name()),
+        DEFAULT_BORDER_COLOR("Default.Border-Color", BorderColor.BLUE.name()),
         COOLDOWN_ENABLED("Cooldown.Enabled", true),
         COOLDOWN_SECONDS("Cooldown.Seconds", 5);
 
@@ -39,19 +38,19 @@ public class Settings extends FileManager {
         }
 
         public boolean getBoolean() {
-            return getInstance().getBoolean(getPath());
+            return Settings.getInstance().getBoolean(getPath());
         }
 
         public String getString() {
-            return getInstance().getString(getPath());
+            return Settings.getInstance().getString(getPath());
         }
 
         public List<String> getStringList() {
-            return getInstance().getStringList(getPath());
+            return Settings.getInstance().getStringList(getPath());
         }
 
         public int getInt() {
-            return getInstance().getInt(getPath());
+            return Settings.getInstance().getInt(getPath());
         }
     }
     private static Settings instance;

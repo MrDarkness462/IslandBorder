@@ -7,22 +7,20 @@ import com.github.zandy.bamboolib.item.ItemBuilder;
 import com.github.zandy.bamboolib.utils.BambooFile;
 import com.github.zandy.bamboolib.utils.BambooUtils;
 import com.github.zandy.bamboolib.versionsupport.material.Materials;
+import com.github.zandy.bamboolib.versionsupport.utils.BorderColor;
+import com.github.zandy.islandborder.files.guis.BorderGUIFile.BorderGUIEnum;
 import com.github.zandy.islandborder.files.guis.ColorGUIFile;
+import com.github.zandy.islandborder.files.languages.Languages;
+import com.github.zandy.islandborder.files.languages.Languages.LanguageEnum;
 import com.github.zandy.islandborder.player.PlayerData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 
 import java.util.*;
 
-import static com.github.zandy.bamboolib.versionsupport.utils.BorderColor.*;
-import static com.github.zandy.islandborder.files.guis.ColorGUIFile.ColorGUIEnum.INVENTORY_TYPE;
-import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.COLOR_GUI_TITLE;
-import static com.github.zandy.islandborder.files.languages.Languages.getLocaleFiles;
-import static com.github.zandy.islandborder.files.languages.Languages.getPlayerLocale;
-
 public class ColorGUI {
     private static ColorGUI instance = null;
-    private final InventoryType inventoryType = INVENTORY_TYPE.getInventoryType();
+    private final InventoryType inventoryType = BorderGUIEnum.INVENTORY_TYPE.getInventoryType();
     private final HashMap<String, Materials> materialsMap = new HashMap<>();
     private final HashMap<String, Integer> slotsMap = new HashMap<>();
     private final HashMap<String, String> pathMap = new HashMap<>();
@@ -38,7 +36,7 @@ public class ColorGUI {
                 pathMap.put(formatted, "Slots.Color." + s.split("\\.")[0]);
             }
         }
-        for (Map.Entry<String, BambooFile> map : getLocaleFiles().entrySet()) {
+        for (Map.Entry<String, BambooFile> map : Languages.getInstance().getLocaleFiles().entrySet()) {
             BambooFile iso = map.getValue();
             if (map.getKey().equals("RO")) {
                 iso.addDefault("Slots.Color.Red-Button.Name", "Selecteaza &cRosu");
@@ -85,8 +83,8 @@ public class ColorGUI {
         UUID uuid = p.getUniqueId();
         PlayerData playerData = PlayerData.get(uuid);
         if (playerData.getBorderColor() == null) return;
-        BambooFile iso = getLocaleFiles().get(getPlayerLocale().get(uuid));
-        GUI gui = new GUI(p, inventoryType, COLOR_GUI_TITLE.getString(uuid));
+        BambooFile iso = Languages.getInstance().getLocaleFiles().get(Languages.getInstance().getPlayerLocale().get(uuid));
+        GUI gui = new GUI(p, inventoryType, LanguageEnum.COLOR_GUI_TITLE.getString(uuid));
         String color = iso.getString("Color." + BambooUtils.capitalizeFirstLetter(playerData.getBorderColor().name().toLowerCase()));
         for (String s : itemsPath) {
             ItemBuilder item = materialsMap.get(s).getItem().setDisplayName(iso.getString(pathMap.get(s) + ".Name").replace("[color]", color));
@@ -96,17 +94,17 @@ public class ColorGUI {
                 public void onClick(GUIItem guiItem, GUI gui) {
                     switch (s.split("\\.")[1]) {
                         case "Red-Button": {
-                            playerData.setBorderColor(RED);
+                            playerData.setBorderColor(BorderColor.RED);
                             p.closeInventory();
                             break;
                         }
                         case "Green-Button": {
-                            playerData.setBorderColor(GREEN);
+                            playerData.setBorderColor(BorderColor.GREEN);
                             p.closeInventory();
                             break;
                         }
                         case "Blue-Button": {
-                            playerData.setBorderColor(BLUE);
+                            playerData.setBorderColor(BorderColor.BLUE);
                             p.closeInventory();
                             break;
                         }

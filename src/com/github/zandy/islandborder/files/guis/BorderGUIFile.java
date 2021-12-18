@@ -6,11 +6,10 @@ import org.bukkit.event.inventory.InventoryType;
 
 import static com.github.zandy.bamboolib.versionsupport.material.Materials.*;
 import static com.github.zandy.islandborder.files.guis.BorderGUIFile.BorderGUIEnum.*;
-import static org.bukkit.event.inventory.InventoryType.HOPPER;
 
 public class BorderGUIFile extends BambooFile {
     public enum BorderGUIEnum {
-        INVENTORY_TYPE("Inventory.Type", HOPPER.name()),
+        INVENTORY_TYPE("Inventory.Type", InventoryType.HOPPER.name()),
         SLOTS_ENABLE_BUTTON_SLOT("Slots.Enable-Button.Slot", 1),
         SLOTS_ENABLE_BUTTON_MATERIAL("Slots.Enable-Button.Material", LIME_BANNER.name()),
         SLOTS_DISABLE_BUTTON_SLOT("Slots.Disable-Button.Slot", 3),

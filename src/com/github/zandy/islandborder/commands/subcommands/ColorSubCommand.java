@@ -4,29 +4,27 @@ import com.github.zandy.bamboolib.command.SubCommand;
 import com.github.zandy.bamboolib.utils.BambooUtils;
 import com.github.zandy.bamboolib.versionsupport.utils.BorderColor;
 import com.github.zandy.islandborder.features.borders.Border;
+import com.github.zandy.islandborder.files.languages.Languages;
+import com.github.zandy.islandborder.files.languages.Languages.LanguageEnum;
+import com.github.zandy.islandborder.support.BorderSupport;
+import net.md_5.bungee.api.chat.ClickEvent.Action;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import static com.github.zandy.islandborder.Main.getBorderSupport;
-import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.*;
-import static com.github.zandy.islandborder.files.languages.Languages.getLocaleFiles;
-import static com.github.zandy.islandborder.files.languages.Languages.getPlayerLocale;
-import static java.util.Arrays.asList;
-import static net.md_5.bungee.api.chat.ClickEvent.Action.RUN_COMMAND;
-import static net.md_5.bungee.api.chat.ClickEvent.Action.SUGGEST_COMMAND;
+import java.util.Arrays;
 
 public class ColorSubCommand extends SubCommand {
 
     public ColorSubCommand() {
-        super("color", INFO_SUBCOMMAND_COLOR.getString(), new String[]{"isborder.color", "isborder.*", "isborder.color.red", "isborder.color.green", "isborder.color.blue"});
+        super("color", LanguageEnum.INFO_SUBCOMMAND_COLOR.getString(), new String[]{"isborder.color", "isborder.*", "isborder.color.red", "isborder.color.green", "isborder.color.blue"});
     }
 
     @Override
     public void execute(CommandSender s, String[] arg) {
         if (!(s instanceof Player)) return;
         Player p = (Player) s;
-        if (!getBorderSupport().inSkyBlockWorld(p)) {
-            p.sendMessage(COMMAND_AVAILABLE_ON_ISLAND.getString(p.getUniqueId()));
+        if (!BorderSupport.getInstance().inSkyBlockWorld(p)) {
+            p.sendMessage(LanguageEnum.COMMAND_AVAILABLE_ON_ISLAND.getString(p.getUniqueId()));
             return;
         }
         if (arg.length == 0) {
@@ -39,7 +37,7 @@ public class ColorSubCommand extends SubCommand {
             return;
         }
         if (!(p.hasPermission("isborder.color." + color.toLowerCase()) || p.hasPermission("isborder.*"))) {
-            p.sendMessage(NO_PERMISSION_COLOR.getString(p.getUniqueId()));
+            p.sendMessage(LanguageEnum.NO_PERMISSION_COLOR.getString(p.getUniqueId()));
             return;
         }
         Border.getInstance().setColorState(p.getUniqueId(), BorderColor.valueOf(color));
@@ -53,8 +51,8 @@ public class ColorSubCommand extends SubCommand {
     private void sendHelp(Player p) {
         p.sendMessage(" ");
         p.sendMessage(" ");
-        p.sendMessage(COMMAND_USAGE_WRONG.getString(p.getUniqueId()));
-        BambooUtils.sendTextComponent(p, COMMAND_USAGE_EXAMPLE.getString(p.getUniqueId()).replace("[command]", COMMAND_USAGE_COLOR.getString(p.getUniqueId())), "/isborder color ", COMMAND_CLICK_TO_SUGGEST.getString(p.getUniqueId()), SUGGEST_COMMAND);
-        for (String s : asList("Red", "Green", "Blue")) BambooUtils.sendTextComponent(p, COMMAND_USAGE_CLICK.getString(p.getUniqueId()).replace("[name]", getLocaleFiles().get(getPlayerLocale().get(p.getUniqueId())).getString("Color." + s)), "/isborder color " + s, COMMAND_CLICK_TO_RUN.getString(p.getUniqueId()), RUN_COMMAND);
+        p.sendMessage(LanguageEnum.COMMAND_USAGE_WRONG.getString(p.getUniqueId()));
+        BambooUtils.sendTextComponent(p, LanguageEnum.COMMAND_USAGE_EXAMPLE.getString(p.getUniqueId()).replace("[command]", LanguageEnum.COMMAND_USAGE_COLOR.getString(p.getUniqueId())), "/isborder color ", LanguageEnum.COMMAND_CLICK_TO_SUGGEST.getString(p.getUniqueId()), Action.SUGGEST_COMMAND);
+        for (String s : Arrays.asList("Red", "Green", "Blue")) BambooUtils.sendTextComponent(p, LanguageEnum.COMMAND_USAGE_CLICK.getString(p.getUniqueId()).replace("[name]", Languages.getInstance().getLocaleFiles().get(Languages.getInstance().getPlayerLocale().get(p.getUniqueId())).getString("Color." + s)), "/isborder color " + s, LanguageEnum.COMMAND_CLICK_TO_RUN.getString(p.getUniqueId()), Action.RUN_COMMAND);
     }
 }

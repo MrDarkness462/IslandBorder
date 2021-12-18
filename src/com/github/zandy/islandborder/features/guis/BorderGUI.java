@@ -10,16 +10,13 @@ import com.github.zandy.bamboolib.versionsupport.material.Materials;
 import com.github.zandy.bamboolib.versionsupport.utils.BorderColor;
 import com.github.zandy.islandborder.features.borders.Border;
 import com.github.zandy.islandborder.files.guis.BorderGUIFile;
+import com.github.zandy.islandborder.files.languages.Languages;
+import com.github.zandy.islandborder.files.languages.Languages.LanguageEnum;
 import com.github.zandy.islandborder.player.PlayerData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 
 import java.util.*;
-
-import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.BORDER_GUI_TITLE;
-import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.NO_PERMISSION_COMMAND;
-import static com.github.zandy.islandborder.files.languages.Languages.getLocaleFiles;
-import static com.github.zandy.islandborder.files.languages.Languages.getPlayerLocale;
 
 public class BorderGUI {
     private static BorderGUI instance = null;
@@ -43,7 +40,7 @@ public class BorderGUI {
             borderColorMaterialsMap.put(BorderColor.GREEN, BorderGUIFile.BorderGUIEnum.SLOTS_COLOR_BUTTON_GREEN_MATERIAL.getMaterial());
             borderColorMaterialsMap.put(BorderColor.BLUE, BorderGUIFile.BorderGUIEnum.SLOTS_COLOR_BUTTON_BLUE_MATERIAL.getMaterial());
         }
-        for (Map.Entry<String, BambooFile> map : getLocaleFiles().entrySet()) {
+        for (Map.Entry<String, BambooFile> map : Languages.getInstance().getLocaleFiles().entrySet()) {
             BambooFile iso = map.getValue();
             if (map.getKey().equals("RO")) {
                 iso.addDefault("Slots.Border.Enable-Button.Name", "&aPorneste Border-ul");
@@ -90,8 +87,8 @@ public class BorderGUI {
         UUID uuid = p.getUniqueId();
         PlayerData playerData = PlayerData.get(uuid);
         if (playerData.getBorderColor() == null) return;
-        BambooFile iso = getLocaleFiles().get(getPlayerLocale().get(uuid));
-        GUI gui = new GUI(p, inventoryType, BORDER_GUI_TITLE.getString(uuid));
+        BambooFile iso = Languages.getInstance().getLocaleFiles().get(Languages.getInstance().getPlayerLocale().get(uuid));
+        GUI gui = new GUI(p, inventoryType, LanguageEnum.BORDER_GUI_TITLE.getString(uuid));
         String color = iso.getString("Color." + BambooUtils.capitalizeFirstLetter(playerData.getBorderColor().name().toLowerCase()));
         for (String s : itemsPath) {
             Materials finalMaterial = materialsMap.get(s);
@@ -114,7 +111,7 @@ public class BorderGUI {
                         }
                         case "Color-Button": {
                             if (p.hasPermission("isborder.color.gui") || p.hasPermission("isborder.*")) ColorGUI.getInstance().open(p);
-                            else p.sendMessage(NO_PERMISSION_COMMAND.getString(uuid));
+                            else p.sendMessage(LanguageEnum.NO_PERMISSION_COMMAND.getString(uuid));
                             break;
                         }
                     }

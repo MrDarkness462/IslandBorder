@@ -1,10 +1,10 @@
 package com.github.zandy.islandborder.files.languages.iso;
 
-import org.magenpurp.api.utils.FileManager;
+import com.github.zandy.bamboolib.utils.BambooFile;
 
 import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.*;
 
-public class RO extends FileManager {
+public class RO extends BambooFile {
 
     public RO() {
         super("Language_RO", "Languages");

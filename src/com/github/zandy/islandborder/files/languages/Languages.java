@@ -69,11 +69,11 @@ public class Languages {
         }
 
         public String getString(UUID uuid) {
-            return getLocaleFiles().get(getPlayerLocale().getOrDefault(uuid, "EN")).getString(getPath());
+            return Languages.getInstance().getLocaleFiles().get(Languages.getInstance().getPlayerLocale().getOrDefault(uuid, "EN")).getString(getPath());
         }
 
         public String getString() {
-            return getLocaleFiles().get("EN").getString(getPath());
+            return Languages.getInstance().getLocaleFiles().get("EN").getString(getPath());
         }
 
         public String getPath() {
@@ -88,10 +88,10 @@ public class Languages {
             return ignoreInLanguage;
         }
     }
-    private static HashMap<UUID, String> playerLocaleMap = new HashMap<>();
-    private static HashMap<String, BambooFile> localeFileMap = new HashMap<>();
-    private final static List<String> languageAbbreviations = new ArrayList<>();
-    private final List<String> isoList = new ArrayList<>();
+    private static Languages instance = null;
+    private final HashMap<UUID, String> playerLocaleMap = new HashMap<>();
+    private final HashMap<String, BambooFile> localeFileMap = new HashMap<>();
+    private final List<String> languageAbbreviations = new ArrayList<>();
 
     public Languages() {
         new EN();
@@ -99,32 +99,31 @@ public class Languages {
         List<String> localeList = new ArrayList<>();
         File dir = new File("plugins/IslandBorder/Languages");
         File[] filesArray = dir.listFiles();
-        for (int i = 0; i < filesArray.length; i++) {
-            File fileFromArray = filesArray[i];
-            if (fileFromArray.isFile() && !fileFromArray.getName().contains("DS_Store")) {
-                localeList.add(fileFromArray.getName().replace("Language_", "").replace(".yml", ""));
-            }
-        }
+        for (File fileFromArray : filesArray) if (fileFromArray.isFile() && !fileFromArray.getName().contains("DS_Store")) localeList.add(fileFromArray.getName().replace("Language_", "").replace(".yml", ""));
         for (String iso : localeList) {
             BambooFile locale = new BambooFile("Language_" + iso, "Languages");
             for (LanguageEnum langEnum : LanguageEnum.values()) if (!langEnum.ignoreInLanguage() && !iso.contains("EN")) locale.addDefault(langEnum.getPath(), langEnum.getDefaultValue());
             locale.copyDefaults();
             locale.save();
             localeFileMap.put(iso, locale);
-            isoList.add(iso);
             languageAbbreviations.add(iso);
         }
     }
 
-    public static HashMap<String, BambooFile> getLocaleFiles() {
+    public HashMap<String, BambooFile> getLocaleFiles() {
         return localeFileMap;
     }
 
-    public static HashMap<UUID, String> getPlayerLocale() {
+    public HashMap<UUID, String> getPlayerLocale() {
         return playerLocaleMap;
     }
 
-    public static List<String> getLanguageAbbreviations() {
+    public List<String> getLanguageAbbreviations() {
         return languageAbbreviations;
+    }
+
+    public static Languages getInstance() {
+        if (instance == null) instance = new Languages();
+        return instance;
     }
 }

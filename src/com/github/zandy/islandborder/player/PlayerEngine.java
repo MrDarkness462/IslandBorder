@@ -5,6 +5,7 @@ import com.github.zandy.bamboolib.database.utils.ColumnInfo;
 import com.github.zandy.bamboolib.database.utils.DatabaseProfile;
 import com.github.zandy.bamboolib.utils.BambooUtils;
 import com.github.zandy.bamboolib.versionsupport.utils.BorderColor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,19 +16,16 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.github.zandy.islandborder.files.Settings.SettingsEnum.*;
-import static java.lang.Boolean.parseBoolean;
-import static org.bukkit.Bukkit.getOnlinePlayers;
-import static org.bukkit.Bukkit.getPlayer;
 
 public class PlayerEngine implements Listener {
+    private static PlayerEngine instance;
     private final Boolean defaultState = DEFAULT_BORDER_STATE.getBoolean();
     private final String defaultColor = DEFAULT_BORDER_COLOR.getString(), defaultLanguage = DEFAULT_LANGUAGE.getString();
-    private final List<UUID> cachedPlayers;
+    private final List<UUID> cachedPlayers = new ArrayList<>();
 
-    public PlayerEngine() {
-        cachedPlayers = new ArrayList<>();
+    public void init() {
         BambooUtils.registerEvent(this);
-        for (Player p : getOnlinePlayers()) playerJoin(p.getUniqueId());
+        for (Player p : Bukkit.getOnlinePlayers()) playerJoin(p.getUniqueId());
     }
 
     @EventHandler
@@ -47,13 +45,13 @@ public class PlayerEngine implements Listener {
         if (!hasDBAccount(uuid)) createAccount(uuid);
         if (hasDBAccount(uuid)) cachedPlayers.add(uuid);
         if (!Database.getInstance().getDatabaseCredentials().isEnabled()) patchProfile(uuid);
-        if (!PlayerData.isCached(uuid)) new PlayerData(uuid, parseBoolean(Database.getInstance().getString(uuid, "Enabled", "Island-Border")), BorderColor.valueOf(Database.getInstance().getString(uuid, "Color", "Island-Border").toUpperCase()), Database.getInstance().getString(uuid, "Language", "Island-Border"));
+        if (!PlayerData.isCached(uuid)) new PlayerData(uuid, Boolean.parseBoolean(Database.getInstance().getString(uuid, "Enabled", "Island-Border")), BorderColor.valueOf(Database.getInstance().getString(uuid, "Color", "Island-Border").toUpperCase()), Database.getInstance().getString(uuid, "Language", "Island-Border"));
     }
 
     private void createAccount(UUID uuid) {
         if (Database.getInstance().getDatabaseCredentials().isEnabled()) {
             List<ColumnInfo> columnInfoList = new ArrayList<>();
-            columnInfoList.add(new ColumnInfo("Player", getPlayer(uuid).getName()));
+            columnInfoList.add(new ColumnInfo("Player", Bukkit.getPlayer(uuid).getName()));
             columnInfoList.add(new ColumnInfo("UUID", uuid.toString()));
             columnInfoList.add(new ColumnInfo("Enabled", defaultState.toString()));
             columnInfoList.add(new ColumnInfo("Color", defaultColor));
@@ -61,7 +59,7 @@ public class PlayerEngine implements Listener {
             Database.getInstance().createPlayer(uuid, "Island-Border", columnInfoList);
             return;
         }
-        Database.getInstance().setString(uuid, getPlayer(uuid).getName(), "Player", "Island-Border");
+        Database.getInstance().setString(uuid, Bukkit.getPlayer(uuid).getName(), "Player", "Island-Border");
         Database.getInstance().setString(uuid, uuid.toString(), "UUID", "Island-Border");
         Database.getInstance().setString(uuid, defaultState.toString(), "Enabled", "Island-Border");
         Database.getInstance().setString(uuid, defaultColor, "Color", "Island-Border");
@@ -70,12 +68,17 @@ public class PlayerEngine implements Listener {
 
     private void patchProfile(UUID uuid) {
         DatabaseProfile profile = Database.getInstance().getProfile(uuid);
-        profile.addDefault("Island-Border.Player", getPlayer(uuid).getName());
+        profile.addDefault("Island-Border.Player", Bukkit.getPlayer(uuid).getName());
         profile.addDefault("Island-Border.UUID", uuid.toString());
         profile.addDefault("Island-Border.Enabled", defaultState.toString());
         profile.addDefault("Island-Border.Color", defaultColor);
         profile.addDefault("Island-Border.Language", defaultLanguage);
         profile.copyDefaults();
         profile.save();
+    }
+
+    public static PlayerEngine getInstance() {
+        if (instance == null) instance = new PlayerEngine();
+        return instance;
     }
 }

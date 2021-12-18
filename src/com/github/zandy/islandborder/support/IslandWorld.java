@@ -1,28 +1,28 @@
 package com.github.zandy.islandborder.support;
 
+import com.github.zandy.bamboolib.BambooLib;
+import com.github.zandy.bamboolib.utils.BambooUtils;
+import com.github.zandy.bamboolib.versionsupport.VersionSupport;
+import com.github.zandy.islandborder.files.languages.Languages.LanguageEnum;
 import com.github.zandy.islandborder.player.PlayerData;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
+import pl.islandworld.Config;
 import pl.islandworld.api.IslandWorldApi;
 import pl.islandworld.api.events.IslandCreateEvent;
 import pl.islandworld.api.events.IslandEnterEvent;
 import pl.islandworld.api.events.IslandLeaveEvent;
 import pl.islandworld.entity.SimpleIsland;
 
-import static com.github.zandy.islandborder.files.languages.Languages.LanguageEnum.PLACEHOLDERS_SIZE_NOT_ON_ISLAND;
-import static org.bukkit.Bukkit.getPlayer;
-import static org.bukkit.Bukkit.getPluginManager;
-import static org.magenpurp.api.MagenAPI.*;
-import static pl.islandworld.Config.ISLE_SIZE;
-
 public class IslandWorld extends BorderSupport implements Listener {
     private final pl.islandworld.IslandWorld islandWorldAPI = pl.islandworld.IslandWorld.getInstance();
-    private final int isleSize = ISLE_SIZE, isleRadius = isleSize - 2;
+    private final int isleSize = Config.ISLE_SIZE, isleRadius = isleSize - 2;
 
     public IslandWorld() {
-        registerEvent(this);
+        BambooUtils.registerEvent(this);
     }
 
     @Override
@@ -31,13 +31,13 @@ public class IslandWorld extends BorderSupport implements Listener {
         if (island == null || !islandWorldAPI.isInsideIsland(p, island) || island.getLocation() != null) return;
         int[] coordinates = IslandWorldApi.getIslandXZCoords(p.getName(), true);
         int x = coordinates[0] + isleSize / 2, z = coordinates[1] + isleSize / 2;
-        getVersionSupport().sendBorder(p, PlayerData.get(p.getUniqueId()).getBorderColor(), x, z, isleRadius * island.getRegionSpacing());
+        VersionSupport.getInstance().sendBorder(p, PlayerData.get(p.getUniqueId()).getBorderColor(), x, z, isleRadius * island.getRegionSpacing());
     }
 
     @Override
     public String size(Player p) {
         SimpleIsland island = IslandWorldApi.getIsland(p.getUniqueId());
-        if (island == null || !IslandWorldApi.getIslandWorld().equals(p.getWorld())) return PLACEHOLDERS_SIZE_NOT_ON_ISLAND.getString(p.getUniqueId());
+        if (island == null || !IslandWorldApi.getIslandWorld().equals(p.getWorld())) return LanguageEnum.PLACEHOLDERS_SIZE_NOT_ON_ISLAND.getString(p.getUniqueId());
         int size = isleRadius * island.getRegionSpacing();
         return size + "x" + size;
     }
@@ -58,9 +58,9 @@ public class IslandWorld extends BorderSupport implements Listener {
             public void run() {
                 if (!islandWorldAPI.isInsideIsland(p, e.getIsland()) || !playerData.getBorderState()) return;
                 send(p);
-                getPluginManager().callEvent(new com.github.zandy.islandborder.api.island.IslandEnterEvent(p));
+                Bukkit.getPluginManager().callEvent(new com.github.zandy.islandborder.api.island.IslandEnterEvent(p));
             }
-        }.runTaskLater(getPlugin(), 10);
+        }.runTaskLater(BambooLib.getPluginInstance(), 10);
     }
 
     @EventHandler
@@ -74,14 +74,14 @@ public class IslandWorld extends BorderSupport implements Listener {
             public void run() {
                 if (!islandWorldAPI.isInsideIsland(p, e.getIsland()) || !playerData.getBorderState()) return;
                 send(p);
-                getPluginManager().callEvent(new com.github.zandy.islandborder.api.island.IslandEnterEvent(p));
+                Bukkit.getPluginManager().callEvent(new com.github.zandy.islandborder.api.island.IslandEnterEvent(p));
             }
-        }.runTaskLater(getPlugin(), 10);
+        }.runTaskLater(BambooLib.getPluginInstance(), 10);
     }
 
     @EventHandler
     private void onIslandLeave(IslandLeaveEvent e) {
         remove(e.getPlayer());
-        getPluginManager().callEvent(new com.github.zandy.islandborder.api.island.IslandLeaveEvent(e.getPlayer()));
+        Bukkit.getPluginManager().callEvent(new com.github.zandy.islandborder.api.island.IslandLeaveEvent(e.getPlayer()));
     }
 }

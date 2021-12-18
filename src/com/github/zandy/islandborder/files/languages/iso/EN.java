@@ -1,9 +1,9 @@
 package com.github.zandy.islandborder.files.languages.iso;
 
+import com.github.zandy.bamboolib.utils.BambooFile;
 import com.github.zandy.islandborder.files.languages.Languages.LanguageEnum;
-import org.magenpurp.api.utils.FileManager;
 
-public class EN extends FileManager {
+public class EN extends BambooFile {
 
     public EN() {
         super("Language_EN", "Languages");
@@ -11,5 +11,4 @@ public class EN extends FileManager {
         copyDefaults();
         save();
     }
-
 }

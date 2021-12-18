@@ -2,13 +2,12 @@ package com.github.zandy.islandborder.player;
 
 import com.github.zandy.bamboolib.database.Database;
 import com.github.zandy.bamboolib.versionsupport.utils.BorderColor;
+import com.github.zandy.islandborder.files.languages.Languages;
+import com.github.zandy.islandborder.support.BorderSupport;
+import org.bukkit.Bukkit;
 
 import java.util.HashMap;
 import java.util.UUID;
-
-import static com.github.zandy.islandborder.Main.getBorderSupport;
-import static com.github.zandy.islandborder.files.languages.Languages.getPlayerLocale;
-import static org.bukkit.Bukkit.getPlayer;
 
 public class PlayerData {
     private final static HashMap<UUID, PlayerData> playerDataMap = new HashMap<>();
@@ -22,7 +21,7 @@ public class PlayerData {
         this.borderState = borderState;
         this.borderColor = borderColor;
         playerDataMap.put(uuid, this);
-        getPlayerLocale().put(uuid, language);
+        Languages.getInstance().getPlayerLocale().put(uuid, language);
     }
 
     public static boolean isCached(UUID uuid) {
@@ -48,14 +47,14 @@ public class PlayerData {
     public void setBorderState(Boolean borderState) {
         this.borderState = borderState;
         Database.getInstance().setString(uuid, borderState.toString(), "Enabled", "Island-Border");
-        if (borderState) getBorderSupport().send(getPlayer(uuid));
-        else getBorderSupport().remove(getPlayer(uuid));
+        if (borderState) BorderSupport.getInstance().send(Bukkit.getPlayer(uuid));
+        else BorderSupport.getInstance().remove(Bukkit.getPlayer(uuid));
     }
 
     public void setBorderColor(BorderColor borderColor) {
         this.borderColor = borderColor;
         Database.getInstance().setString(uuid, borderColor.name(), "Color", "Island-Border");
-        if (borderState) getBorderSupport().send(getPlayer(uuid));
+        if (borderState) BorderSupport.getInstance().send(Bukkit.getPlayer(uuid));
     }
 
     public void setCooldownSeconds(int cooldownSeconds) {

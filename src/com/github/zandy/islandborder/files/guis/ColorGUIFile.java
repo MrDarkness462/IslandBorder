@@ -6,11 +6,10 @@ import org.bukkit.event.inventory.InventoryType;
 
 import static com.github.zandy.bamboolib.versionsupport.material.Materials.*;
 import static com.github.zandy.islandborder.files.guis.ColorGUIFile.ColorGUIEnum.*;
-import static org.bukkit.event.inventory.InventoryType.HOPPER;
 
 public class ColorGUIFile extends BambooFile {
     public enum ColorGUIEnum {
-        INVENTORY_TYPE("Inventory.Type", HOPPER.name()),
+        INVENTORY_TYPE("Inventory.Type", InventoryType.HOPPER.name()),
         SLOTS_RED_BUTTON_SLOT("Slots.Red-Button.Slot", 1),
         SLOTS_RED_BUTTON_MATERIAL("Slots.Red-Button.Material", RED_DYE.name()),
         SLOTS_EMPTY_1_SLOT("Slots.Empty-1.Slot", 2),
