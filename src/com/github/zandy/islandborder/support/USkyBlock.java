@@ -15,7 +15,7 @@ public class USkyBlock extends BorderSupport {
     private final String worldName;
 
     public USkyBlock() {
-        BambooFile uSkyBlockConfiguration = new BambooFile("config", "plguins/uSkyBlock", true);
+        BambooFile uSkyBlockConfiguration = new BambooFile("config", "plugins/uSkyBlock", true);
         protectionRange = uSkyBlockConfiguration.getInt("options.island.protectionRange");
         worldName = uSkyBlockConfiguration.getString("options.general.worldName");
     }

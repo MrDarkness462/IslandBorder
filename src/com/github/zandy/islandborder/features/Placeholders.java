@@ -11,8 +11,7 @@ import org.bukkit.entity.Player;
 public class Placeholders {
 
     public Placeholders() {
-        new PlaceholderManager();
-        PlaceholderManager.getInstance().setIdentifier("isborder");
+        PlaceholderManager.setIdentifier("isborder");
         PlaceholderManager.getInstance().addPlaceholder(new Placeholder("status") {
             @Override
             public String request(Player p) {

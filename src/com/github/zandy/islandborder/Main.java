@@ -35,6 +35,7 @@ public class Main extends JavaPlugin {
         consolePrint(" ");
         consolePrint("Finding SkyBlock plugin...");
         setEnabled(BorderSupport.init());
+        if (!isEnabled()) return;
         consolePrint(" ");
         consolePrint("Loading Settings...");
         new Settings();
