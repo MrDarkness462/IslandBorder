@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Settings extends BambooFile {
     public enum SettingsEnum {
+        UPDATE_CHECKER("Update-Checker", true),
         COMMAND_ALIASES("Command-Aliases", Arrays.asList("ib", "islandborder", "aiborder", "bbborder", "bsborder", "usborder", "iwborder")),
         SUBCOMMAND_ENABLED_GUI("SubCommand-Enabled.GUI", true),
         SUBCOMMAND_ENABLED_BORDER_ENABLE("SubCommand-Enabled.Enable", true),
