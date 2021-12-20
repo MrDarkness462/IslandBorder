@@ -29,7 +29,6 @@ public abstract class BorderSupport {
             consolePrint("&auSkyBlock &fplugin found!");
         } else {
             consolePrint("&cNO SKYBLOCK PLUGIN FOUND! DISABLING...");
-            consolePrint(" ");
             consolePrint("&f&m--------------------------");
             return false;
         }
