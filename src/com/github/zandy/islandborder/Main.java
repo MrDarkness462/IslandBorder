@@ -23,7 +23,7 @@ public class Main extends JavaPlugin {
         BambooLib.setPluginInstance(this);
         consolePrint("&m--------------------------");
         consolePrint("Initializing Island Border " + getDescription().getVersion());
-        if (!BambooUtils.isVersion(8, 12, 17)) {
+        if (!BambooUtils.isVersion(8, 12, 17, 18)) {
             consolePrint(" ");
             consolePrint("&c&lCan't run on: " + VersionSupport.getInstance().getVersion());
             consolePrint(" ");
