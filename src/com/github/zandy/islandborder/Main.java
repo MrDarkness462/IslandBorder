@@ -62,7 +62,7 @@ public class Main extends JavaPlugin {
         }
         if (!enablePlaceholders) consolePrint("No hooks found!");
         else new Placeholders();
-        if (UPDATE_CHECKER.getBoolean()) SpigotUpdater.getInstance().checkForUpdates(56320);
+        if (UPDATE_CHECKER.getBoolean()) SpigotUpdater.getInstance().checkForUpdates("IslandBorder", 56320);
         consolePrint("&aIsland Border loaded successfully!");
         consolePrint("&m--------------------------");
     }
