@@ -1,6 +1,6 @@
 main: com.github.zandy.islandborder.Main
 name: IslandBorder
-version: Build 8
+version: Build 9
 api-version: 1.17
 author: Zandy
 softdepend:
